@@ -1,0 +1,12 @@
+{
+    "title": "標題", 
+    "copyright": "版權所有 {year} {owner}",
+    "price": "售價: NT$ {price}", 
+    "email": "信箱", 
+    "password": "密碼", 
+    "login": "登入", 
+    "signup": "註冊", 
+    "adminLogin": "管理人員登入", 
+    "addToShopCart": "加入購物車"
+
+}

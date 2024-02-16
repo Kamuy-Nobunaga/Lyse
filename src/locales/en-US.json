@@ -1,0 +1,11 @@
+{
+    "title": "Title", 
+    "copyright": "Copyright {year} {owner}. All rights reserved.",
+    "price": "Price: NT$ {price}", 
+    "email": "EMAIL", 
+    "password": "PASSWORD", 
+    "login": "LOGIN", 
+    "signup": "SIGN UP", 
+    "adminLogin": "Admin Login", 
+    "addToShopCart": "Add to shop cart"
+}
