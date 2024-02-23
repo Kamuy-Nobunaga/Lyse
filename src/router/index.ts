@@ -3,20 +3,18 @@ import HomeView from '../views/HomeView.vue'
 import { useI18n } from 'vue-i18n'
 import { useProductStore } from '@/stores/product'
 
-
-// /:lang(zh|en)?
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/:locale?',
+      path: '/:locale',
       component: RouterView, 
       children: [
         {
           path: '',
           name: 'home',
           component: HomeView
-        },
+        }, 
         {
           path: 'about',
           name: 'about',
@@ -27,8 +25,8 @@ const router = createRouter({
           name: 'productList',
           component: () => import('../views/ProductList.vue'), 
           beforeEnter:( to, from, next ) => {
-            const productStore = useProductStore()
-            if (productStore.userInfo === 'admin') {
+            const userCheck = localStorage.getItem('user')
+            if (userCheck === 'admin') {
               next()
             } else {
               return next({ name: 'login'})
@@ -41,13 +39,34 @@ const router = createRouter({
           component: () => import('../views/ProductDetail.vue')
         }, 
         {
+        path: 'categories',
+        name: 'categories',
+        component: () => import('../views/CategoriesView.vue')
+        }, 
+        {
+          path: 'top',
+          name: 'top',
+          component: () => import('../views/ProductTopView.vue')
+        },
+        {
+          path: 'bottom',
+          name: 'bottom',
+          component: () => import('../views/ProductBottomView.vue')
+        }, 
+        {
+          path: 'checkout',
+          name: 'checkout',
+          component: () => import('../views/CheckoutView.vue')
+        }, 
+        {
           path: 'login',
           name: 'login',
           component: () => import('../views/LoginView.vue'), 
           beforeEnter:( to, from, next ) => {
-            const productStore = useProductStore()
-            if (productStore.userInfo === 'admin') {
-              next({ name: 'productList'})
+            
+            const userCheck = localStorage.getItem('user')
+            if (userCheck === 'admin') {
+              next({ path: `/en/productList` })
             } else {
               return next()
             }
@@ -62,31 +81,65 @@ const router = createRouter({
         {
           path: 'admin-main',
           name: 'adminMain',
-          component: () => import('../views/AdminMainView.vue')
+          component: () => import('../views/AdminMainView.vue'), 
+          beforeEnter:( to, from, next ) => {
+            
+            const adminCheck = localStorage.getItem('admin')
+            if (adminCheck && adminCheck === 'admin') {
+              next()
+            } else {
+              return next({ path: `/en/admin-login` })
+            }
+          }, 
         },
+        {
+          path: 'admin-product-add',
+          name: 'adminProductAdd',
+          component: () => import('../views/AdminProductAddView.vue'), 
+          beforeEnter:( to, from, next ) => {
+            
+            const adminCheck = localStorage.getItem('admin')
+            if (adminCheck && adminCheck === 'admin') {
+              next()
+            } else {
+              return next({ path: `/en/admin-login` })
+            }
+          }
+        },
+        {
+          path: 'admin-product-edit/:id',
+          name: 'adminProductEdit',
+          component: () => import('../views/AdminProductEditView.vue'), 
+          beforeEnter:( to, from, next ) => {
+            
+            const adminCheck = localStorage.getItem('admin')
+            if (adminCheck && adminCheck === 'admin') {
+              next()
+            } else {
+              return next({ path: `/en/admin-login` })
+            }
+          }
+        }, 
+        {
+          path: '404',
+          name: '404',
+          component: () => import('../views/404View.vue')
+        }, 
+        {
+          path: ':catchAll(.*)',
+          redirect: '/en/404',
+        }
+
 
       ]
-    }
+    }, 
+    {
+      path: '/',
+      redirect: '/en'
+    }, 
+
   ]
 })
 
-// router.beforeEach( to => {
-//   const productStore = useProductStore()
-//   if(to.fullPath === '/login') return;
-//   if(productStore.isLogin === false) {
-//     return '/login'
-//   }
-// })
-// router.beforeEach((to) => {
-  // let language = to.params.locale
-  
-  // if(!language) {
-  //   language = 'zh'
-  // } 
-  // const { locale } = useI18n();
-  // console.log(language, locale);
-
-  // locale.value = language; 
-// })
 
 export default router

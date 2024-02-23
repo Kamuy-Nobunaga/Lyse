@@ -7,5 +7,17 @@
     "login": "LOGIN", 
     "signup": "SIGN UP", 
     "adminLogin": "Admin Login", 
-    "addToShopCart": "Add to shop cart"
+    "addToShopCart": "Add to cart", 
+    "about": "About", 
+    "products": "All Products", 
+    "categories": "Categories", 
+    "top": "Top", 
+    "bottom": "Bottom",
+    "aboutUs": "\"Lyse\" is more than just a Clothing Store. We're two decades deep working in Sales, Marketing & Strategy with some of the Worlds most successful brands. Our natural approach is disruptive and forward thinking, we believe the most successful brands walk their own path and don't worry about the haters. Collaborations, Brand Strategy, Creative Direction, Styling, Content Provision & Trend Prediction are just some of the things we'd love to help with. With recent clients including Mackintosh, Goldwin & Merrell 1TRL we're confident that we can add value for even the most contemporary on trend brands.", 
+    "add": "Add",
+    "update": "Update", 
+    "404": "This page is not existed or there is something wrong with the website.",
+    "B2Homepage": "Go back to homepage"
+
+
 }

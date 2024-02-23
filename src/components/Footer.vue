@@ -55,7 +55,7 @@
             margin: 1rem;
             height: 2rem;
             border: none;
-            background: #bf754b;
+            background: var(--dark);
             font-size: 1rem;
         }
         > select:focus {

@@ -11,12 +11,17 @@
   </div>  
 </template>
 
-<style scoped lang="scss">
-//seems that online pics are not adjustable
-
+<style lang="scss">
+:root {
+  --dark: #bf754b;
+  --light: #d9c0a3;
+  --lightest: #eaeaea;
+  --font: #260101;
+  --font-family: 'Roboto', sans-serif;
+}
 .products-page {
   margin: 0 auto;
-  background: #d9c0a3;
-  width: 80%;
+  background: var(--light);
+  width: 100%;
 }
 </style>

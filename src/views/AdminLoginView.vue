@@ -34,12 +34,12 @@
     const logIn = () => {
         if(email.value === 'admin' && password.value === '123') {
             wrongMsg.value = false
-            router.push({name: 'adminMain'})
+            localStorage.setItem('admin', email.value)
+            router.push({ path: `/${locale.value}/admin-main` })
         } else {
             wrongMsg.value = true
             email.value = ''
             password.value = ''
-
         }
     }
 </script>

@@ -37,6 +37,7 @@
         if(email.value === 'admin' && password.value === '123') {
             wrongMsg.value = false
             productStore.userInfo = 'admin'
+            localStorage.setItem('user', email.value)
             router.push({name: 'home'})
         } else {
             wrongMsg.value = true

@@ -18,23 +18,23 @@
         productStore.fetchProducts()
         locale.value = route.params.locale
     })
-
+    
+    
     const handleClick: Function = (product: TProduct2) => {
         console.log(product);
-        
         const { id } = product
-        router.push({ path: `/${locale.value}/productList/${id}` })
+        router.push({ path: `/productList/${id}` })
     }
 
 </script>
 
 <template>
 <div class="header">
-    <h2>Clothing</h2>
-    <p>Shop the best in quality clothing at Glasgow based independent mens store Lyse.</p>
+    <h2>Top</h2>
+    <p>Shop the best in shirts, t-shirts, sweatshirts, jumpers, cardigans and tops with Glasgow based quality independent mens store Lyse.</p>
 </div>
 <div class="products">
-    <div class="product" v-for="product in productStore.products2" :key="product.id" @click="handleClick(product)">
+    <div class="product" v-for="product in productStore.getTop()" :key="product.id" @click="handleClick(product)">
         <img :src="product.image ? product.image : 'https://fakeimg.pl/350x200/?text=Hello'">
         <div class="product-details">
             <div class="product-brand">
@@ -51,7 +51,7 @@
 .header {
     margin: 0 auto;
     text-align: center;
-    width: 50%;
+    width: 40%;
     h2 {
         display: block;
         color: var(--font);
@@ -63,17 +63,19 @@
     }
 }
 .products {
-    width: 95%;
+    width: 90%;
     margin: 1rem auto;
+    padding: 10px;
     box-sizing: border-box;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 5px;
+    gap: 10px;
+    cursor: pointer;
     .product {
         margin-bottom: 1rem;
         width: 90%;
         box-shadow: 5px 2px 5px grey;
-        border-radius: 10px;
+        border-radius: 5px;
         > img {
         overflow: hidden;
         width: 100%;

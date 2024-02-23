@@ -23,3 +23,25 @@ export type TOptions = {
     headers: {}, 
     body: {}
 }
+
+export type TProduct2 = {
+    id?: string, 
+    name: string,
+    brand: string,
+    color: string,
+    image: string, 
+    categories: string, 
+    details: string,
+    price: number
+}
+
+export type TCart = { 
+    id?: string, 
+    name: string, 
+    brand: string, 
+    color: string, 
+    size: string, 
+    price: number, 
+    imgUrl: string,
+    amounts: number, 
+}

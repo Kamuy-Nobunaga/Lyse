@@ -7,8 +7,13 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AdminAllProducts: typeof import('./src/components/AdminAllProducts.vue')['default']
+    AdminBottomProducts: typeof import('./src/components/AdminBottomProducts.vue')['default']
     AdminSideBar: typeof import('./src/components/AdminSideBar.vue')['default']
+    AdminTopProducts: typeof import('./src/components/AdminTopProducts.vue')['default']
     Banner: typeof import('./src/components/Banner.vue')['default']
+    CheckoutProgress: typeof import('./src/components/CheckoutProgress.vue')['default']
+    Dialogue: typeof import('./src/components/Dialogue.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCol: typeof import('element-plus/es')['ElCol']
     ElIcon: typeof import('element-plus/es')['ElIcon']
@@ -16,6 +21,8 @@ declare module 'vue' {
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElMenuItemGroup: typeof import('element-plus/es')['ElMenuItemGroup']
+    ElRadioButton: typeof import('element-plus/es')['ElRadioButton']
+    ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElRow: typeof import('element-plus/es')['ElRow']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     Footer: typeof import('./src/components/Footer.vue')['default']
@@ -24,7 +31,12 @@ declare module 'vue' {
     IconEcosystem: typeof import('./src/components/icons/IconEcosystem.vue')['default']
     IconSupport: typeof import('./src/components/icons/IconSupport.vue')['default']
     IconTooling: typeof import('./src/components/icons/IconTooling.vue')['default']
+    OrderCheck: typeof import('./src/components/OrderCheck.vue')['default']
+    OrderInfo: typeof import('./src/components/OrderInfo.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Shopcart: typeof import('./src/components/Shopcart.vue')['default']
+    Shopcartsmall: typeof import('./src/components/Shopcartsmall.vue')['default']
+    ShopcartSmall: typeof import('./src/components/ShopcartSmall.vue')['default']
   }
 }

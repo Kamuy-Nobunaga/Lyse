@@ -1,6 +1,11 @@
 <template>
     <h1>Welcome back, let's get started!</h1>
     <SideBar />
+    <AllProducts v-if="productStore.adminAll" />
+    <TopProducts v-if="productStore.adminTop" />
+    <BottomProducts v-if="productStore.adminBottom" />
+
+
 </template>
 <script setup lang="ts">
     import { ref } from 'vue';
@@ -8,30 +13,26 @@
     import { useProductStore } from '@/stores/product'
     import { useRoute, useRouter } from 'vue-router';
     import SideBar from '../components/AdminSideBar.vue'
+    import AllProducts from '../components/AdminAllProducts.vue'
+    import TopProducts from '../components/AdminTopProducts.vue'
+    import BottomProducts from '../components/AdminBottomProducts.vue'
+    import { onMounted } from 'vue';
 
     const route = useRoute()
     const router = useRouter()
 
     const { locale } = useI18n()
     const productStore = useProductStore()
-    const email = ref('')
-    const password = ref('')
-    const wrongMsg = ref(false)
 
-    locale.value = route.params.locale
+    onMounted(() => {
+        locale.value = route.params.locale
+        productStore.adminAll = true
+    })
 
-    const logIn = () => {
-        if(email.value === 'admin' && password.value === '123') {
-            wrongMsg.value = false
-            router.push({name: 'home'})
-        } else {
-            wrongMsg.value = true
-            email.value = ''
-            password.value = ''
-
-        }
-    }
 </script>
 
 <style lang="scss" scoped>
+ h1 {
+    text-align: center;
+ }
 </style>
