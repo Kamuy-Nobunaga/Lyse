@@ -38,4 +38,9 @@
  h1 {
     text-align: center;
  }
+ @media (max-width: 767px) {
+    h1 {
+        font-size: 1.2rem;
+    }
+ }
 </style>

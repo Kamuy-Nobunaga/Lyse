@@ -54,6 +54,16 @@
         color: var(--light);
         background: var(--dark);
     }
+} 
 
+@media (max-width: 767px) {
+    .order-check {
+        > p {
+            font-size: 1rem;
+        }
+        > button {
+            width: 50%;
+        }
+    }
 }
 </style>

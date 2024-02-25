@@ -12,4 +12,11 @@
 
         }
     }
+    @media (max-width: 767px) {
+        .admin-reviews {
+            > h1 {
+                font-size: 1rem;
+            }
+        }
+    }
 </style>

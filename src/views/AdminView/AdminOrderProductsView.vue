@@ -153,4 +153,37 @@
             background: var(--dark);
         }
     }
+
+@media (max-width: 767px) {
+    .items-in-order {
+        width: 100%;
+        > table {
+            > thead {
+                > tr {
+                    > th {
+                        width: (95% / 5);
+                        font-size: 0.8rem;
+                    }
+                    .complete {
+                        width: 5%;
+                    }
+                }
+            }
+            > tbody {
+                > tr {
+                    > td {
+                        position: relative;
+                        font-size: 0.6rem;
+                        > img {
+                            width: 80%;
+                        }
+                    }
+                }
+            }
+        }
+        > button {
+            width: 50%;
+        }
+    }
+}
 </style>

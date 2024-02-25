@@ -73,7 +73,7 @@
         > h3 {
             text-align: left;
             margin: 0.5rem 0 1rem 0;
-            color: red;
+            color: var(--error);
             font-weight: bold;
         }
         .login-buttons {
@@ -88,5 +88,29 @@
             }
         }
     }
+}
+
+@media (max-width: 767px) {
+    .login {
+        > h2 {
+            font-size: 1.5rem;
+        }
+        > form {
+            width: 70%;
+            > input {
+                height: 1.5rem;
+            }
+            > h3 {
+                font-size: 1rem;
+            }
+            .login-buttons {
+                > button {
+                    font-size: 0.8rem;
+                    padding: 0.5rem;
+                }
+            }
+        }
+    }
+
 }
 </style>

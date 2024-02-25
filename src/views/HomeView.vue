@@ -82,6 +82,7 @@ h2 {
     > img {
       width: 90%;
       cursor: pointer;
+      border-radius: 10px;
     } 
     .product-details {
       > p {
@@ -95,6 +96,7 @@ h2 {
     > img {
       width: 90%; 
       cursor: pointer;
+      border-radius: 10px;
     } 
     .product-details {
       > p {
@@ -102,7 +104,31 @@ h2 {
       }
     } 
   }
-
 }
 
+@media (max-width: 767px) {
+  h2 {
+    font-size: 1.5rem;
+  }
+  .random-products {
+    display: block;
+    margin: 1rem auto;
+    .random-top {
+      margin: 0 auto;
+      .product-details {
+        > p {
+          font-size: 0.6rem;
+        }
+      } 
+    }
+    .random-bottom {
+      margin: 0 auto;
+      .product-details {
+        > p {
+          font-size: 0.6rem;
+        }
+      } 
+    }
+  }
+}
 </style>

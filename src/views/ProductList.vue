@@ -98,5 +98,27 @@
         }
     }
 }
-    
+
+@media (max-width: 767px) {
+    .header {
+        width: 80%;
+        h2 {
+            font-size: 1.5rem;
+        }
+        p {
+            font-size: 0.8rem;
+        }
+    }
+    .products {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+        .product {
+            width: 100%;
+            .product-details {
+                .product-name {
+                    font-size: 0.8rem;
+                }
+            }
+        }
+    }
+}
 </style>

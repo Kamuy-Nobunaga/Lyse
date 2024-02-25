@@ -100,7 +100,6 @@
                     color: var(--font);
                 }
                 .top-bottom {
-                    z-index: 100;
                     > ul {
                         list-style: none;
                         padding: 0;
@@ -119,5 +118,46 @@
         }
     }
 }
+@media (max-width: 767px) {
+    .navbar {
+    margin-bottom: 1rem;
+    .logo-and-login {
+        padding: 1rem;
+        > img {
+        width: 25%;
+        }
+        .user-and-cart {
+            > a {
+                color: var(--font); 
+                .el-icon {
+                    margin-right: 1rem;
+                }
 
+            }
+        }  
+    }
+    .navbar-items {
+        width: 100%;
+        > ul {
+            justify-content: space-between;
+            > li {
+                > a{
+                    font-size: 1rem;
+                }
+                .top-bottom {
+                    > ul {
+                        > li {
+                            > a {
+                                margin: 0.8rem;
+                                font-size: 1rem;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+}
 </style>

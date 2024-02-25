@@ -7,9 +7,7 @@
                     <tr>
                         <th scope="col">Image</th>
                         <th scope="col">Name</th>
-                        <th scope="col">Price/Item</th>
-                        <th scope="col">Amounts</th>
-                        <th scope="col">Price</th>
+                        <th scope="col">Price per Item/Size/Number</th>
                         <th scope="col">Remove</th>
                     </tr>
                 </thead>
@@ -44,6 +42,7 @@ div {
     .shopcart-items {
         > table {
             > thead {
+                font-size: 0.5rem;
                 > tr {
                     > th {
                         padding: 1rem;
@@ -66,8 +65,28 @@ div {
         color: var(--light);
         background: var(--dark);
     }
-
 }
 
-    
+@media (max-width: 767px) {
+    .shopcart-items {
+        > table {
+            > thead {
+                font-size: 0.5rem;
+                > tr {
+                    > th {
+                        padding: 0.5rem;
+                        width: 10%;
+
+                    }
+                }
+            }
+        }
+    }
+    > button {
+        margin: 1rem 0;
+        padding: 0.5rem;
+        font-size: 0.8rem;
+    }
+
+}    
 </style>

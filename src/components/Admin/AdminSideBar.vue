@@ -127,6 +127,19 @@
     .el-sub-menu {
     }
 }
+@media (max-width: 767px) {
+  .el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 100px;
+  min-height: 200px;
+}
+.el-menu {
+    margin-left: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    .el-sub-menu {
+    }
+}
 
+}
 </style>
   

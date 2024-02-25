@@ -66,7 +66,7 @@
     .admin-orders {
         text-align: center;
         color: var(--font);
-        height: 80dvh;
+        height: 200dvh;
         > h2 {
             font-size: 2rem;
         }

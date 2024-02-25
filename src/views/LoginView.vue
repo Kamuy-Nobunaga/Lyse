@@ -76,9 +76,8 @@
             font-size: 1rem;
         }
         > h3 {
-            text-align: left;
             margin: 0.5rem 0 1rem 0;
-            color: red;
+            color: var(--error);
             font-weight: bold;
         }
         .login-buttons {
@@ -99,6 +98,24 @@
                 background: transparent;
                 color: #bf754b;
                 font-weight: bold;
+            }
+        }
+    }
+}
+
+@media (max-width: 767px) {
+    .login {
+        > h2 {
+            font-size: 1.5rem;
+        }
+        > form {
+            width: 60%;
+            > input {
+                height: 1.5rem;
+            }
+            > h3 {
+                text-align: left;
+                font-size: 1rem;
             }
         }
     }

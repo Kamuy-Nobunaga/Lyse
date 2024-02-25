@@ -81,4 +81,28 @@
         }
     }
   }
-  </style>
+
+@media (max-width: 767px) {
+  h2 {
+    font-size: 2rem;
+    font-weight: normal;
+  }
+  p {
+    font-size: 1rem;
+  }
+  .categories {
+    > h3 {
+            font-size: 1.5rem;
+            font-weight: normal;
+            margin-left: 0.5rem;
+        }
+    .top {
+        margin-top: -20%;
+    }
+    .bottom {
+        margin-top: -53%;
+    }
+  }
+
+}
+</style>

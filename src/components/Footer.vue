@@ -13,15 +13,8 @@
     </div>
 </template>
 <script setup lang="ts">
-
     const d = new Date()
     const year = d.getFullYear()
-    
-    
-    
-
-
-
 </script>
 
 <style lang="scss" scoped>
@@ -36,5 +29,23 @@
             padding-top: 3rem;
         }
     }
+@media (max-width: 767px) {
+    .footer {
+        display: block;
+        padding: 0;
+        .footer-copyright {
+            width: 80%;
+            margin: 0 auto;
+            text-align: center;
+            padding-top: 1rem;
+            font-size: 0.8rem;
+        }
+        .footer-info {
+            > h3, > p {
+                font-size: 1rem;
+            }
+        }
+    }
 
+}
 </style>

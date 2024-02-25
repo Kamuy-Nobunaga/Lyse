@@ -161,5 +161,88 @@
     > p {
         font-size: 1rem;
     }
+} 
+
+@media (max-width: 767px) {
+    .product-detail {
+        display: block;
+        width: 100%;
+        margin: 0 auto;
+        text-align: center;
+        .item-img {
+            width: 100%;
+            > img {
+                width: 95%;
+            }        
+        }
+        .item-content {
+            width: 100%;
+            .item-name {
+                font-size: 1rem;
+            }
+            .item-brand {
+                margin-top: 1rem;
+                font-size: 0.5rem;
+            }
+            .item-price {
+                margin: 1rem 0;
+                font-size: 0.8rem;
+                font-weight: normal;
+            }
+            .item-size {
+                text-align: left;
+                margin: 1rem 0.5rem;
+                > p {
+                    margin: 1rem auto 0 auto;
+                    font-size: 0.8rem;
+                }
+                > label { 
+                    > input {
+                        margin-right: 0.5rem;
+                        padding: 0.5rem;
+                        border-radius: 3px;
+                    }
+                }
+                > label:nth-child(2) {
+                    > input::before {
+                        font-size: 0.8rem;
+                    }
+                }
+                > label:nth-child(3) {
+                    > input::before {
+                        font-size: 0.8rem;
+                    }
+                }
+                > label:nth-child(4) {
+                    > input::before {
+                        font-size: 0.8rem;
+                    }
+                }
+                > label:nth-child(5) {
+                    > input::before {
+                        font-size: 0.8rem;
+                    }
+                }
+            }
+            > button {
+                width: 80%;
+                font-size: 0.8rem;
+            }
+            .item-details {
+                width: 90%;
+                margin: 0 auto;
+                line-height: 1.5rem;
+                font-size: 0.8rem;
+            }
+        }
+    }
+    .cart-body {
+        > img {
+            width: 30%;
+        }
+        > p {
+            font-size: 0.8rem;
+        }
+    }
 }
 </style>

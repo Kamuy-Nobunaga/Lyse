@@ -111,5 +111,22 @@
         }
     }
 }
-    
+  
+@media (max-width: 767px) {
+    .header {
+        h2 {
+            font-size: 1.5rem;
+        }
+    }
+    .products {
+        width: 100%;
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+        .product {
+            width: 100%;
+            > img {
+            width: 100%;
+            }
+        }
+    }
+}  
 </style>

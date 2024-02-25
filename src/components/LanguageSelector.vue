@@ -43,5 +43,15 @@ select {
 select:focus {
     outline: none;
 }
+@media (max-width: 767px) {
+    select {
+        width: 4rem;
+        height: 2.5rem;
+        font-size: 0.8rem;
+        > option {
+            font-size: 5rem;
+        }
+    }
 
+}
 </style>

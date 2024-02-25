@@ -36,7 +36,8 @@
         </div>
         <div class="foward-and-next">
             <button @click="processToShopCart">Foward</button>
-            <button @click="processToOrderCheck" :disabled="infoFilledCheck">Next</button>
+            <button @click="processToOrderCheck" :disabled="!(customerInfo.nameCustomer && customerInfo.email &&
+ customerInfo.phoneCustomer && deliveryInfo.nameDelivery && deliveryInfo.address && deliveryInfo.phoneDelivery)">Next</button>
         </div>
     </div>
 </template>
@@ -64,8 +65,6 @@
         address: ''
     })
     
-    const infoFilledCheck = !(customerInfo.nameCustomer && customerInfo.email &&
- customerInfo.phoneCustomer && deliveryInfo.nameDelivery && deliveryInfo.address && deliveryInfo.phoneDelivery)
 
     const regexEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
     const regexPhone = /((?=(09))[0-9]{10})$/g
@@ -137,25 +136,7 @@
                 outline: none;
             }
             > p {
-                margin-top: 0;
-                margin-bottom: 1rem;
-                color: var(--error);
-            }
-        }
-    }
-    .delivery-info {
-        > h3 {
-
-        }
-        > form {
-            > label {
-
-            }
-            > input {
-                
-            }
-            > p {
-
+                font-size: 0.8rem;
             }
         }
     }
@@ -183,6 +164,74 @@
         > button:hover {
             color: var(--light);
             background: var(--dark);
+        }
+    }
+}
+
+@media (max-width: 767px) {
+    .order-info {
+        .checkout-price {
+            width: 80%;
+            > p {
+                font-size: 1.2rem;
+            }
+        }
+        .user-info, .delivery-info {
+            margin: 1rem auto;
+            width: 95%;
+            > h3 {
+                font-size: 1.2rem;
+            }
+            > form {
+                > input {
+                    width: 90%;
+                    margin: 0 auto 0.5rem auto;
+                }
+                > p {
+                    margin-top: 0;
+                    margin-bottom: 1rem;
+                    color: var(--error);
+                }
+            }
+        }
+        .delivery-info {
+            > h3 {
+
+            }
+            > form {
+                > label {
+
+                }
+                > input {
+                    
+                }
+                > p {
+
+                }
+            }
+        }
+        .notice {
+            width: 90%;
+            > p {
+                color: var(--error);
+                font-size: 0.8rem;
+            }
+        }
+        .foward-and-next {
+            > button {
+                margin-right: 1rem;
+                    padding: 0.5rem;
+                    width: 30%;
+                    color: var(--dark);
+                    background: var(--light);
+                    border: 1px solid var(--dark);
+                    border-radius: 5px;
+                    font-size: 1rem;
+                }
+            > button:hover {
+                color: var(--light);
+                background: var(--dark);
+            }
         }
     }
 }

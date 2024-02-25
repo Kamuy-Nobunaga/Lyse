@@ -111,4 +111,34 @@
         }
     }
 }
+
+@media (max-width: 767px) {
+    .product-detail {
+        display: block;
+        width: 100%;
+        margin: 0 0.5rem;
+        .item-img {
+            width: 100%;
+            > img {
+                width: 100%;
+                border-radius: 5px;
+            }        
+        }
+        .item-content {
+            margin-top: 1rem;
+            width: 90%;
+            > form {
+                > input {
+                    margin: 0.5rem auto 1rem auto;
+                }
+                > textarea {
+                    width: 90%;
+                    background: var(--light);
+                    font-size: 1.2rem;
+                    color: var(--font);
+                }
+            }
+        }
+    }
+}
 </style>

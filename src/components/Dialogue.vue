@@ -104,12 +104,6 @@
         background: var(--dark);
         color: var(--light);
       }
-      .el-icon {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        cursor: pointer;
-      }
     }
     .cart-footer {
       text-align: center;
@@ -132,7 +126,23 @@
     }     
   }
 
-  </style>
+@media (max-width: 767px) {
+  .modal {
+    font-size: 0.8rem;
+    width: 90%;
+    .cart-header {
+      > p {
+        width: 80%;
+      }
+    }
+    .cart-footer {
+      .btn {
+        font-size: 0.8rem;
+      }
+    }     
+  }
+}
+</style>
 
   <!-- https://thisthingofours.co.uk/cdn/shop/files/Archive-Web.png?v=1708689841 -->
   

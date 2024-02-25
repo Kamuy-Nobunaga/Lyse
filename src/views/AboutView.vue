@@ -8,7 +8,6 @@
 </template>
 
 <style>
-@media (min-width: 1024px) {
   .about {
     min-height: 100vh;
     text-align: center;
@@ -42,5 +41,21 @@
     /* background-size: cover; */
 
   }
-}
+  @media (max-width: 767px) {
+    .about {
+      > h1 {
+        font-size: 2rem;
+      }
+      > p {
+        width: 80%;
+        line-height: 2rem;
+        font-size: 1rem;
+      }
+      > img {
+        width: 100%;
+        margin-bottom: 1rem;
+      }
+    }
+  }
+
 </style>

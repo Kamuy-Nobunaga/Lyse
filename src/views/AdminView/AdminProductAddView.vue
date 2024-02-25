@@ -133,4 +133,33 @@
         }
     }
 }
+
+@media (max-width: 767px) {
+    .add-product {
+        .header {
+            > h1 {
+                font-size: 1.5rem;
+            }
+        }
+        .product-content {
+            width: 80%;
+            > form {
+                > label {
+                    font-size: 1rem;
+                }
+                > input {
+                    margin: 1rem auto;
+                }
+                > textarea {
+                    width: 90%;
+                }
+                > input:focus, > textarea:focus {
+                    outline: none;
+                    caret-color: var(--dark);
+                }
+            }
+        }
+    }
+
+}
 </style>

@@ -9,9 +9,11 @@
                 <tr>
                     <th scope="row" v-if="item.imgUrl"><img :src="item.imgUrl" alt=""></th>
                     <td class="item-name" v-if="item.brand">{{ item.brand }} - {{ item.name }} - {{ item.color }}</td>
-                    <td class="item-price" v-if="item.price">NT$ {{ item.price }}</td>
-                    <td class="item-size" v-if="item.size">{{ item.size }}</td>
-                    <td class="item-amounts" v-if="item.amounts"><el-icon @click="minusNum(key, item, item.size)"><Minus /></el-icon>{{ item.amounts }}<el-icon @click="addNum(key, item, item.size)"><Plus /></el-icon></td>
+                    <td class="item-price-size-amounts" v-if="item.price && item.size && item.amounts">
+                        <span class="item-price">NT$ {{ item.price }}</span><br>
+                        <span class="item-size">{{ item.size }}</span><br>
+                        <span class="item-amounts"><el-icon @click="minusNum(key, item, item.size)"><Minus /></el-icon>{{ item.amounts }}<el-icon @click="addNum(key, item, item.size)"><Plus /></el-icon></span>
+                    </td>
                     <td class="item-delete" v-if="item.amounts"><el-icon @click="deleteItem(key)"><Delete /></el-icon></td>
                 </tr>
             </tbody>
@@ -62,17 +64,14 @@
         width: 90%;
         margin: 0 auto;
         text-align: center;
-        > h3 {
-            
-        }
         > table {
             width: 100%;
             .shopcart-item {
                 > tr {
                     > th {
-                        width: 20%;
+                        width: 30%;
                         > img {
-                            width: 50%;
+                            width: 80%;
                             border-radius: 10px;
                         }
                     }
@@ -80,27 +79,35 @@
                         font-size: 1.2rem; 
                         .el-icon {
                             cursor: pointer;
-                            margin: 10px;
                         }
                     }
                     .item-name {
-                        width: 20%;
-                        font-size: 1rem;
-                        line-height: 1.5rem; 
+                        width: 30%;
+                        font-size: 0.8rem;
+                        line-height: 1.2rem; 
                     }
-                    .item-price {
-                        width: 10%;
-                        font-size: 1rem;
+                    .item-price-size-amounts {
+                        width: 30%;
+                        font-size: 0.8rem;
                         padding-left: 1rem;
-                    }
-                    .item-size, .item-amounts, .item-delete {
-                        width: 10%;
+                        .item-price {
+
+                        }
+                        .item-size {
+                            font-size: 0.6rem;
+                        }
+                        .item-amounts {
+                            .el-icon {
+                                font-size: 0.6rem;
+                                padding: 0 5px;
+                            }
+                        }
                     }
                 }
-                > h2 {
-                    width: 100%;
-                    text-align: center;
-                }
+                // > h2 {
+                //     width: 100%;
+                //     text-align: center;
+                // }
 
             }
         }
@@ -112,4 +119,39 @@
             }
         }
     }
+
+@media (max-width: 767px) {
+    .shopcart-items {
+        width: 95%;
+        margin: 0 auto;
+        > table {
+            .shopcart-item {
+                > tr {
+                    > th {
+                        > img {
+                            width: 80%;
+                            border-radius: 3px;
+                        }
+                    }
+                    > td {
+                        font-size: 0.5rem; 
+                        .el-icon {
+                            cursor: pointer;
+                            margin: 0;
+                        }
+                    }
+                    .item-name {
+                        width: 10%;
+                        font-size: 0.6rem;
+                        line-height: 1rem; 
+                    }
+                    .item-price-size-amounts {
+                        font-size: 0.6rem;
+                    }
+
+                }
+            }
+        }
+    }
+}
 </style>
