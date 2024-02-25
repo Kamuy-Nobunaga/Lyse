@@ -26,7 +26,7 @@ const router = createRouter({
           component: () => import('../views/ProductList.vue'), 
           beforeEnter:( to, from, next ) => {
             const userCheck = localStorage.getItem('user')
-            if (userCheck === 'admin') {
+            if (userCheck === 'user') {
               next()
             } else {
               return next({ name: 'login'})
@@ -65,7 +65,7 @@ const router = createRouter({
           beforeEnter:( to, from, next ) => {
             
             const userCheck = localStorage.getItem('user')
-            if (userCheck === 'admin') {
+            if (userCheck === 'user') {
               next({ path: `/en/productList` })
             } else {
               return next()
@@ -76,12 +76,12 @@ const router = createRouter({
         {
           path: 'admin-login',
           name: 'adminLogin',
-          component: () => import('../views/AdminLoginView.vue')
+          component: () => import('@/views/AdminView/AdminLoginView.vue')
         },
         {
           path: 'admin-main',
           name: 'adminMain',
-          component: () => import('../views/AdminMainView.vue'), 
+          component: () => import('@/views/AdminView/AdminMainView.vue'), 
           beforeEnter:( to, from, next ) => {
             
             const adminCheck = localStorage.getItem('admin')
@@ -95,7 +95,7 @@ const router = createRouter({
         {
           path: 'admin-product-add',
           name: 'adminProductAdd',
-          component: () => import('../views/AdminProductAddView.vue'), 
+          component: () => import('@/views/AdminView/AdminProductAddView.vue'), 
           beforeEnter:( to, from, next ) => {
             
             const adminCheck = localStorage.getItem('admin')
@@ -109,7 +109,7 @@ const router = createRouter({
         {
           path: 'admin-product-edit/:id',
           name: 'adminProductEdit',
-          component: () => import('../views/AdminProductEditView.vue'), 
+          component: () => import('@/views/AdminView/AdminProductEditView.vue'), 
           beforeEnter:( to, from, next ) => {
             
             const adminCheck = localStorage.getItem('admin')
@@ -120,6 +120,21 @@ const router = createRouter({
             }
           }
         }, 
+        {
+          path: 'admin-order-products/:user/:order',
+          name: 'adminOrderProducts',
+          component: () => import('@/views/AdminView/AdminOrderProductsView.vue'), 
+          beforeEnter:( to, from, next ) => {
+            
+            const adminCheck = localStorage.getItem('admin')
+            if (adminCheck && adminCheck === 'admin') {
+              next()
+            } else {
+              return next({ path: `/en/admin-login` })
+            }
+          }
+        }, 
+
         {
           path: '404',
           name: '404',

@@ -1,54 +1,52 @@
 <template>
     <div class="shopcart-items">
-        <h3>Your Cart</h3>
+        <slot name="header">
+        </slot>
+        
         <table>
+            <slot name="table-header"></slot>
             <tbody class="shopcart-item" v-for="(item, key) in productStore.cartItems" :key="key">
                 <tr>
-                    <th scope="row"><img :src="item.imgUrl" alt=""></th>
-                    <td class="item-name">{{ item.brand }} - {{ item.name }} - {{ item.color }}</td>
-                    <td class="item-price">NT$ {{ item.price }}</td>
-                    <td class="item-size">{{ item.size }}</td>
-                    <td class="item-amounts"><el-icon @click="minusNum(key, item, item.size)"><Minus /></el-icon>{{ item.amounts }}<el-icon @click="addNum(key, item, item.size)"><Plus /></el-icon></td>
-                    <td class="item-delete"><el-icon @click="deleteItem(key)"><Delete /></el-icon></td>
+                    <th scope="row" v-if="item.imgUrl"><img :src="item.imgUrl" alt=""></th>
+                    <td class="item-name" v-if="item.brand">{{ item.brand }} - {{ item.name }} - {{ item.color }}</td>
+                    <td class="item-price" v-if="item.price">NT$ {{ item.price }}</td>
+                    <td class="item-size" v-if="item.size">{{ item.size }}</td>
+                    <td class="item-amounts" v-if="item.amounts"><el-icon @click="minusNum(key, item, item.size)"><Minus /></el-icon>{{ item.amounts }}<el-icon @click="addNum(key, item, item.size)"><Plus /></el-icon></td>
+                    <td class="item-delete" v-if="item.amounts"><el-icon @click="deleteItem(key)"><Delete /></el-icon></td>
                 </tr>
             </tbody>
         </table>
         <div class="total-price">
-            <p>Total price:</p>
-            <p>NT$ {{ price }}</p>
+            <p>Total price: NT$ <span>{{ totalPriceAfterFetch }}</span></p>
         </div>
+        <slot name="next-button"></slot>
     </div>
 </template>
 <script setup lang="ts">
-    import { onMounted, ref } from 'vue';
+    import { onMounted, ref, computed } from 'vue';
     import { useProductStore } from '../stores/product'; 
     import { Minus, Plus, Delete } from '@element-plus/icons-vue';
     import type { TCart } from '@/types/ProductType';
 
-    // import { computed } from 'vue';
-
     const productStore = useProductStore()
     const user = localStorage.getItem('user') 
-    const price = ref(0)
+
+    const totalPriceAfterFetch = computed(() => {
+        return productStore.getTotalPriceAfterFetch;
+    });
 
 
-    // const getTotalPrice = computed(async () => { 
-    //    }
-    //    return totalPrice.value
-    // })
-
-    // console.log(totalPrice.value, 'asdf');
     const deleteItem = (key: string | null) => {
         productStore.deleteCartItem(user, key)
         productStore.fetchCartItems(user)
     }
     
     const addNum = (key: string, item: TCart, size: string) => {
-        productStore.addProductAmount(user, key, item, size)
+        productStore.addProductNumber(user, key, item, size)
         productStore.fetchCartItems(user)
     }
     const minusNum = (key: string, item: TCart, size: string) => {
-        productStore.minusProductAmount(user, key, item, size)
+        productStore.minusProductNumber(user, key, item, size)
         productStore.fetchCartItems(user)
     }
 
@@ -56,8 +54,6 @@
     onMounted(() => {
         productStore.fetchProducts()
         productStore.fetchCartItems(user)
-        // price.value = productStore.getTotalPrice
-        console.log(productStore.cartItems, '2ss');
     })
 
 </script>
@@ -70,8 +66,7 @@
             
         }
         > table {
-            // display: flex;
-            // gap: 10px;
+            width: 100%;
             .shopcart-item {
                 > tr {
                     > th {
@@ -101,7 +96,18 @@
                     .item-size, .item-amounts, .item-delete {
                         width: 10%;
                     }
+                }
+                > h2 {
+                    width: 100%;
+                    text-align: center;
+                }
 
+            }
+        }
+        .total-price {
+            > p {
+                > span {
+                    font-weight: bolder;
                 }
             }
         }

@@ -1,14 +1,14 @@
 <template>
-    <h2>Categories</h2>
+    <h2>{{ $t('categories') }}</h2>
     <p>Pick an item in each to redefine your style.</p>
     <div class="categories">
-        <h3>Top</h3>
+        <h3>{{ $t('top') }}</h3>
         <div class="top">
             <img src="https://thisthingofours.co.uk/cdn/shop/files/VertexNXL.1.png?v=1706370172" alt="top image" @click="handleTop">
 
             
         </div>
-        <h3>bottom</h3>
+        <h3>{{ $t('bottom') }}</h3>
         <div class="bottom">
             <img src="https://cafe24img.poxo.com/anglan/web/product/extra/small/202402/70e48c48d8e8f478276a688750f660e4.jpg" alt="bottom image" @click="handleBottom">
         </div>
@@ -33,7 +33,6 @@
       
     onMounted(() => {
       productStore.fetchProducts()
-      locale.value = route.params.locale
     })
     
     const handleTop = () => {

@@ -1,5 +1,4 @@
 <template>
-    <!-- <h5 @click="toggleSideBar">Side Bar</h5> -->
     <el-menu
         active-text-color="#d9c0a3"
         background-color="#bf754b"
@@ -30,7 +29,7 @@
         <el-icon><document /></el-icon>
         <span>Reviews</span>
         </el-menu-item>
-        <el-menu-item index="4" @click="handleBtm">
+        <el-menu-item index="4" @click="handleShopSetting">
         <el-icon><setting /></el-icon>
         <span>Shop Settings</span>
         </el-menu-item>
@@ -45,7 +44,7 @@
     Setting,
   } from '@element-plus/icons-vue'
   import { ref } from 'vue';
-  import { useProductStore } from '../stores/product';
+  import { useProductStore } from '../../stores/product';
   import router from '@/router';
   
 
@@ -98,9 +97,15 @@
 
   }
 
-  // const handleSetting = () => {
-  //   productStore.adminView = true
-  // }
+  const handleShopSetting = () => {
+    productStore.adminAll = false
+    productStore.adminTop = false
+    productStore.adminBottom = false
+    productStore.adminOrders = false
+    productStore.adminReviews = false 
+    productStore.adminShopSetting = true
+
+  }
   const addAProduct = () => {
     router.push({ path: '/en/admin-product-add' })
   }
@@ -111,17 +116,6 @@
 </script>
 
 <style lang="scss" scoped>
-h5 {
-   margin-left: 0.5rem; 
-}
-h5:hover {
-    background: #bf754b;
-    color: #d9c0a3;
-    width: fit-content;
-    padding: 0.1rem;
-    border-radius: 10px;
-    cursor: pointer;
-}
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
   min-height: 400px;
@@ -129,6 +123,7 @@ h5:hover {
 .el-menu {
     margin-left: 1rem;
     border-radius: 10px;
+    margin-bottom: 1rem;
     .el-sub-menu {
     }
 }

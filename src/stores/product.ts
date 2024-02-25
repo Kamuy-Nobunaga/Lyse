@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
-import type { TProduct, TProduct2, TCart } from '@/types/ProductType'
+import type { TProduct, TProduct2, TCart, TCustomer, TDelivery, TOrders } from '@/types/ProductType'
 import { db, productsRef, dbRealtime, cartRef } from '@/firebase';
-import { deleteDoc, getDocs, getDoc, doc, updateDoc, addDoc } from 'firebase/firestore';
+import { deleteDoc, getDocs, getDoc, doc, updateDoc, addDoc, or } from 'firebase/firestore';
 import { ref, set, get, child, push, update, remove } from 'firebase/database';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -18,13 +18,16 @@ export const useProductStore = defineStore('product', {
       products2: <TProduct2[]> [], 
       product: <TProduct2> {}, 
       itemAdded: <boolean> false, 
+      showCarAtNav: <boolean> false,
       checkoutProgress: <number> 1, 
       adminAll: <boolean> false, 
       adminTop: <boolean> false, 
       adminBottom: <boolean> false, 
       adminOrders: <boolean> false, 
-      adminReviews: <boolean> false, 
-      cartItems: <TCart[]> []
+      adminReviews: <boolean> false, adminShopSetting: <boolean> false, 
+      cartItems: <TCart[]> [], 
+      allOrders: <TOrders[]>[], 
+      anOrder: <TOrders[]>[], 
     } 
   },
   getters: {
@@ -37,22 +40,23 @@ export const useProductStore = defineStore('product', {
     getBottom(state) {
       return () => state.products2.filter((item: TProduct2) => item.categories === 'bottom')
     }, 
-    getTotalPrice(state) {
+    getTotalPriceAfterFetch(state) {
+      let totalPrice = 0;
 
-      const totalPriceArray: number[] = []
-      let totalPrice = 0
-  
-       state.cartItems?.map((item) => {
-        totalPriceArray.push(item.price)
-      })
+      for (const key in state.cartItems) {
+        if (state.cartItems.hasOwnProperty(key)) {
+          const item = state.cartItems[key];
+          console.log(item.price, typeof(item.price));
+          const singleItemTotalPrice = Number(item.price) * Number(item.amounts)
+          if(singleItemTotalPrice) {
+            totalPrice += singleItemTotalPrice;
+          }
+          console.log(totalPrice);
+        }
+      }
 
-      for(let i = 0; i < totalPriceArray.length; i++ ) {
-        console.log(totalPrice);
-        totalPrice += totalPriceArray[i]
-        console.log(totalPrice);
-      } 
-      return totalPrice
-    },
+      return totalPrice;
+    }
   }, 
   actions: {
     // async fetchProductList() {
@@ -119,7 +123,7 @@ export const useProductStore = defineStore('product', {
       this.itemAdded = !this.itemAdded
 
       const newPostKey = push(child(ref(dbRealtime), `cart/${user}`)).key;
-      const updates: {[key: string]: any} =  {}
+      const updates: {[key: string]: any} =  {} 
       updates[`cart/${user}/${newPostKey}`] = {
         name: product.name, 
         brand: product.brand, 
@@ -131,7 +135,7 @@ export const useProductStore = defineStore('product', {
       }
       await update(ref(dbRealtime), updates)
     }, 
-    async addProductAmount(user: string | null, key: string, item: TCart, size: string) {
+    async addProductNumber(user: string | null, key: string, item: TCart, size: string) {
       const updates: {[key: string]: any} =  {}
       updates[`cart/${user}/${key}`] = {
         name: item.name, 
@@ -144,7 +148,7 @@ export const useProductStore = defineStore('product', {
       }
       await update(ref(dbRealtime), updates)
     }, 
-    async minusProductAmount(user: string | null, key: string, item: TCart, size: string) {
+    async minusProductNumber(user: string | null, key: string, item: TCart, size: string) {
       const updates: {[key: string]: any} =  {}
       updates[`cart/${user}/${key}`] = {
         name: item.name, 
@@ -157,10 +161,51 @@ export const useProductStore = defineStore('product', {
       }
       await update(ref(dbRealtime), updates)
     }, 
+    async clearCart(user: string | null) {
+      const updates: {[key: string]: any} =  {}
+      updates[`cart/${user}`] = {}
+      console.log(updates);
+      
+      await update(ref(dbRealtime), updates)
+    }, 
+
     async deleteCartItem(user: string | null, key: string | null) {
       const itemRef = ref(dbRealtime, `cart/${user}/${key}`) 
       await remove(itemRef)
-    }
+    }, 
+    async fetchOrders() {
+      const ordersRef = ref(dbRealtime, `orders`)
+      const snapshot = await get(ordersRef)
+      this.allOrders = snapshot.val()
+    }, 
+    async fetchOrder(keyUser: string, keyOrder: string) {
+      const orderRef = ref(dbRealtime, `orders/${keyUser}/${keyOrder}`)
+      const snapshot = await get(orderRef)
+      this.anOrder = snapshot.val()
+    }, 
+    async addAnOrder(user: string | null, customerInfo: TCustomer, deliveryInfo: TDelivery) {
+      const newPostKey = push(child(ref(dbRealtime), `orders/${user}`)).key;
+
+      const updates: {[key: string]: any} = {}
+      updates[`orders/${user}/${newPostKey}`] = {
+        ...this.cartItems, 
+        ...customerInfo, 
+        ...deliveryInfo
+      }
+      console.log(updates);
+      
+      await update(ref(dbRealtime), updates)
+    }, 
+    async updateOrderToCompleted(keyUser: string, keyOrder: string) {
+      const updates: {[key: string]: any} =  {}
+      updates[`orders/${keyUser}/${keyOrder}`] = {
+        ...this.anOrder, 
+        status: true
+      }
+      
+      await update(ref(dbRealtime), updates)
+    }, 
+
   }
 })
 

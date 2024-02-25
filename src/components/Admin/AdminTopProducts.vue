@@ -1,6 +1,6 @@
 <script setup lang="ts">
-    import { type TProduct2 } from '../types/ProductType';
-    import { useProductStore } from '../stores/product';
+    import { type TProduct2 } from '../../types/ProductType';
+    import { useProductStore } from '../../stores/product';
     import { onMounted } from 'vue';
     import { useI18n } from 'vue-i18n';
     import { useRoute, useRouter } from 'vue-router';
@@ -16,8 +16,7 @@
     
     onMounted(() => {
         productStore.fetchProducts()
-        locale.value = route.params.locale
-        productStore.adminBottom = true
+        productStore.adminTop = true
     })
 
     const handleClick: Function = (product: TProduct2) => {
@@ -36,10 +35,10 @@
 
 <template>
 <div class="header">
-    <h2>Bottom</h2>
+    <h2>Top</h2>
 </div>
 <div class="products">
-    <div class="product" v-for="product in productStore.getBottom()" :key="product.id" >
+    <div class="product" v-for="product in productStore.getTop()" :key="product.id" >
         <img :src="product.image ? product.image : 'https://fakeimg.pl/350x200/?text=Hello'" @click="handleClick(product)">
         <div class="product-details">
             <div class="product-brand">

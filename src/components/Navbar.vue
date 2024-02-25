@@ -1,11 +1,11 @@
 <template>
     <div class="navbar">
         <div class="logo-and-login">
-            <div></div>
+            <LanguageSelector />
             <img src="../assets/logo-no-background.svg" alt="logo image" @click="toHomePage">
             <div class="user-and-cart">
                 <router-link :to="{ path: `/${route.params.locale}/login` }"><el-icon><UserFilled /></el-icon></router-link>
-                <el-icon class="cart" @click="productStore.toggleItemAdded"><ShoppingCart /></el-icon>
+                <el-icon class="cart" @click="productStore.toggleItemAdded" v-if="productStore.showCarAtNav"><ShoppingCart /></el-icon>
             </div>
         </div>
         <div class="navbar-items">
@@ -39,6 +39,8 @@
     import { UserFilled, ShoppingCart, ArrowDown } from '@element-plus/icons-vue';
     import { ref } from 'vue';
     import { useProductStore } from '../stores/product'; 
+    import LanguageSelector from './LanguageSelector.vue';
+
 
 
     const route = useRoute()

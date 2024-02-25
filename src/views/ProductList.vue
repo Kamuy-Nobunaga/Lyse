@@ -16,7 +16,6 @@
 
     onMounted(() => {
         productStore.fetchProducts()
-        locale.value = route.params.locale
     })
 
     const handleClick: Function = (product: TProduct2) => {
@@ -74,6 +73,7 @@
         width: 90%;
         box-shadow: 5px 2px 5px grey;
         border-radius: 10px;
+        cursor: pointer;
         > img {
         overflow: hidden;
         width: 100%;

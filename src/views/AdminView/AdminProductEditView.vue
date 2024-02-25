@@ -1,95 +1,74 @@
 <template>
-    <div class="add-product">
-        <div class="header">
-            <el-icon @click="goBack"><ArrowLeft /></el-icon>
-            <h1>Add A Product</h1>
+    <div class="product-detail">
+        <div class="item-img">
+            <img :src="productStore.product.image" alt="product image">
         </div>
-        <div class="product-content">
-            <form @submit.prevent="addProduct">
+        <div class="item-content">
+            <form @submit.prevent="updateProduct">
                 <label for="name">Name</label>
-                <input v-model="productForm.name" name="name">
+                <input v-model="productStore.product.name" name="name">
 
                 <label for="brand">Brand</label>
-                <input v-model="productForm.brand" name="brand">
+                <input v-model="productStore.product.brand" name="brand">
 
                 <label for="price">Price</label>
-                <input v-model="productForm.price" name="price">
+                <input v-model="productStore.product.price" name="price">
 
                 <label for="color">Color</label>
-                <input v-model="productForm.color" name="color">
+                <input v-model="productStore.product.color" name="color">
 
                 <label for="image">Image Url</label>
-                <input v-model="productForm.image" name="image">
-
-                <label for="categories">Categories</label>
-                <input v-model="productForm.categories" name="categories" list="categories">
-                <datalist id="categories">
-                    <option value="top">top</option>
-                    <option value="bottom">bottom</option>
-                </datalist>
+                <input v-model="productStore.product.image" name="image">
 
                 <label for="details">Details</label>
                 <textarea 
-                    v-model="productForm.details" 
+                    v-model="productStore.product.details" 
                     name="details"
                     cols="40" rows="20"
                     ></textarea>
 
-                <button>{{ $t('add') }}</button>
+                <button>{{ $t('update') }}</button>
             </form>
         </div>
     </div>  
 </template>
 
 <script setup lang="ts">
+    import router from '@/router';
     import { useProductStore } from '@/stores/product'
-    import { reactive, onMounted } from 'vue';
-    import { useRouter } from 'vue-router';
-    import { ArrowLeft } from '@element-plus/icons-vue'
+    import { ref, onMounted } from 'vue';
+    import { useRoute } from 'vue-router';
 
-    const router = useRouter()
+    const route = useRoute()
 
     const productStore = useProductStore()
-    const productForm = reactive({
-        name: '', 
-        brand: '', 
-        price: null, 
-        color: '', 
-        image: '', 
-        details: '', 
-        categories: ''
+    const productId = route.params.id
 
-    })
-
-    const addProduct = () => {
-        productStore.addProduct(productForm)
+    const updateProduct = () => {
+        productStore.updateProduct(productId as string)
         router.push({ path: '/en/admin-main' })
-    }
-    const goBack = () => {
-        router.go(-1)
     }
         
     onMounted(() => {
-        
+        productStore.fetchProduct(productId)
     })
 
 </script>
 
 <style scoped lang="scss">
-.add-product {
-    text-align: center;
-    .header {
-        .el-icon {
-            font-size: 1.5rem;
-        }
-        .el-icon:hover {
-            font-size: 3rem;
-        }
+.product-detail {
+    display: flex;
+    width: 90%;
+    margin: 1rem auto;
+    .item-img {
+        width: 55%;
+        > img {
+            width: 95%;
+            border-radius: 5px;
+        }        
     }
-    .product-content {
-        text-align: left;
+    .item-content {
         width: 40%;
-        margin: 0 auto;
         > form {
             > label {
                 display: block;
@@ -97,7 +76,7 @@
                 color: var(--font);
             }
             > input {
-                margin: 1rem auto 2rem auto;
+                margin: 0.1rem auto 2rem auto;
                 border: none;
                 border-bottom: 3px dotted var(--dark);
                 width: 100%;

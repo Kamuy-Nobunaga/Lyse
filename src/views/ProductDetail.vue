@@ -29,7 +29,11 @@
     </div>  
     <Dialogue>
         <template v-slot:cart-body>
-            <ShopcartSmall />
+            <ShopcartSmall>
+                <template v-slot:header>
+                    <h3>Your Cart</h3>
+                </template>
+            </ShopcartSmall>
         </template>
     </Dialogue>  
 </template>
@@ -43,15 +47,17 @@
     import ShopcartSmall from '@/components/ShopcartSmall.vue';
 
 
-    const route = useRoute()
 
+    const route = useRoute()
     const productStore = useProductStore()
+
     const productId = route.params.id
     const size = ref('') 
     const user = localStorage.getItem('user')
         
     onMounted(() => {
         productStore.fetchProduct(productId as string)
+        productStore.showCarAtNav = true
     })
 
     const addToCart = (product: TProduct2) => {
@@ -140,6 +146,7 @@
             border: 1px solid var(--dark);
             border-radius: 5px;
             font-size: 1rem;
+            cursor: pointer;
         }
         .item-details {
             color: var(--font);

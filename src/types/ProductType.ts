@@ -45,3 +45,32 @@ export type TCart = {
     imgUrl: string,
     amounts: number, 
 }
+
+export type TOrders = {
+    address: string, 
+    email: string, 
+    nameCustomer: string, 
+    nameDelivery: string, 
+    phoneCustomer: string, 
+    phoneDelivery: string, 
+    amounts: number, 
+    brand: string, 
+    color: string, 
+    imgUrl: string, 
+    name: string, 
+    price: number, 
+    size: string, 
+    status: string
+}
+
+export type TCustomer = {
+    name: string, 
+    email: string, 
+    phone: string
+}
+
+export type TDelivery = {
+    name: string, 
+    phone: string, 
+    address: string
+}

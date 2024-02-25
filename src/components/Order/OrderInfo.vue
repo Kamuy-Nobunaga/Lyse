@@ -1,73 +1,98 @@
 <template>
     <div class="order-info">
         <div class="checkout-price">
-            <p>Total price: NT$ 12800</p>
+            <p>Total price: NT$ <span>{{ totalPriceAfterFetch }}</span></p>
         </div>
         <div class="user-info">
             <h3>Customer Information</h3>
             <form>
                 <label for="name">Name</label>
-                <input type="text" name="name" v-model="customerInfo.name" required>
+                <input type="text" name="name" v-model="customerInfo.nameCustomer" required>
                 <label for="email">Email</label>
-                <input type="text" name="email" v-model="customerInfo.email" required>
-                <label for="phone">Phone</label>
-                <input type="text" name="phone" v-model="customerInfo.phone" required>
+                <input type="email" name="email" v-model="customerInfo.email" required>
+                <p v-if="customerInfo.email && 
+                    !customerInfo.email.match(regexEmail)">please type in a valid email address</p>
+                <label for="phone">Phone (e.g. 0912345678)</label>
+                <input type="text" name="phone" v-model="customerInfo.phoneCustomer" required>
+                <p v-if="customerInfo.phoneCustomer && !customerInfo.phoneCustomer.match(regexPhone)">please type in a valid Taiwan phone number</p>
             </form>
         </div>
         <div class="delivery-info">
             <h3>Delivery Information</h3>
             <form>
                 <label for="name">Name</label>
-                <input type="text" name="name" v-model="deliveryInfo.name" required>
-                <label for="phone">Phone</label>
-                <input type="text" name="phone" v-model="deliveryInfo.phone" required>
+                <input type="text" name="name" v-model="deliveryInfo.nameDelivery" required>
+                <label for="phone">Phone(e.g. 0912345678)</label>
+                <input type="text" name="phone" v-model="deliveryInfo.phoneDelivery" required>
+                <p v-if="deliveryInfo.phoneDelivery && !deliveryInfo.phoneDelivery.match(regexPhone)">please type in a valid Taiwan phone number</p>
+
                 <label for="address">Address</label>
                 <input type="text" name="address" v-model="deliveryInfo.address" required>    
             </form>
         </div>
         <div class="notice">
-            <p>Please check if all information is correct before processing to next step.</p>
+            <p v-if="!customerInfo.nameCustomer || !customerInfo.email ||
+ !customerInfo.phoneCustomer || !deliveryInfo.nameDelivery || !deliveryInfo.address || !deliveryInfo.phoneDelivery">Please check if all information is filled and correct before processing to next step.</p>
         </div>
         <div class="foward-and-next">
             <button @click="processToShopCart">Foward</button>
-            <button @click="processToOrderCheck">Next</button>
+            <button @click="processToOrderCheck" :disabled="infoFilledCheck">Next</button>
         </div>
     </div>
 </template>
 <script setup lang="ts">
-    import { onMounted, reactive } from 'vue';
-    import { useProductStore } from '../stores/product';
+    import { onMounted, reactive, computed } from 'vue';
+    import { useProductStore } from '@/stores/product'; 
+    
 
     const productStore = useProductStore()
+    const user = localStorage.getItem('user')
 
     onMounted(() => {
-        productStore.fetchProducts()
+        productStore.fetchCartItems(user)
         productStore.checkoutProgress = 2
     })
 
     const customerInfo = reactive({
-        name: '', 
+        nameCustomer: '', 
         email: '', 
-        phone: ''
+        phoneCustomer: ''
     })
     const deliveryInfo = reactive({
-        name: '', 
-        phone: '', 
+        nameDelivery: '', 
+        phoneDelivery: '', 
         address: ''
     })
+    
+    const infoFilledCheck = !(customerInfo.nameCustomer && customerInfo.email &&
+ customerInfo.phoneCustomer && deliveryInfo.nameDelivery && deliveryInfo.address && deliveryInfo.phoneDelivery)
+
+    const regexEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+    const regexPhone = /((?=(09))[0-9]{10})$/g
+    const totalPriceAfterFetch = computed(() => {
+        return productStore.getTotalPriceAfterFetch;
+    });
 
 
     const processToShopCart = () => {
         productStore.checkoutProgress = 1
     }
     const processToOrderCheck = () => {
+        productStore.addAnOrder(user, customerInfo, deliveryInfo)
+        productStore.clearCart(user)
         productStore.checkoutProgress = 3
+        customerInfo.nameCustomer = '' 
+        customerInfo.email = '' 
+        customerInfo.phoneCustomer = ''
+        deliveryInfo.nameDelivery = '' 
+        deliveryInfo.phoneDelivery = '' 
+        deliveryInfo.address = ''
     }
 
 </script>
 <style scoped lang="scss">
 .order-info {
-    margin-top: 1rem;
+    margin: 1rem 0;
     text-align: center;
     .checkout-price {
         margin: 0 auto;
@@ -78,6 +103,11 @@
         > p {
             color: var(--light);
             font-size: 1.5rem;
+            > span {
+                font-weight: bolder;
+                text-decoration: underline;
+                color: var(--font);
+            }
         }
     }
     .user-info, .delivery-info {
@@ -106,6 +136,11 @@
             > input:focus {
                 outline: none;
             }
+            > p {
+                margin-top: 0;
+                margin-bottom: 1rem;
+                color: var(--error);
+            }
         }
     }
     .delivery-info {
@@ -119,6 +154,9 @@
             > input {
                 
             }
+            > p {
+
+            }
         }
     }
     .notice {
@@ -127,7 +165,7 @@
         width: 30%;
         border-radius: 10px;
         > p {
-            color: var(--dark);
+            color: var(--error);
             font-size: 1.5rem;
         }
     }

@@ -4,22 +4,20 @@
   </div>
   <h2>Style Redefined, Daily.</h2>
     <div class="random-products" >  
-      <div class="random-top" @click="handleClick(randomTop)">
-        <img :src="randomTop.image" alt="">
+      <div class="random-top">
+        <img :src="randomTop.image" alt="an image of random top" @click="handleClick(randomTop)">
         <div class="product-details">
           <p>{{ randomTop.brand }} - {{ randomTop.name }} - {{ randomTop.color }}</p>
         </div>
       </div>  
-      <div class="random-bottom" @click="handleClick(randomBottom)">
-        <img :src="randomBottom.image" alt="">
+      <div class="random-bottom" >
+        <img :src="randomBottom.image" alt="an image of random trousers" @click="handleClick(randomBottom)">
         <div class="product-details">
           <p>{{ randomBottom.brand }} - {{ randomBottom.name }} - {{ randomBottom.color }}</p>
         </div>
       </div>  
 
     </div> 
-
-    <ShopcartSmall />
 </template>
 
 <script setup lang="ts">
@@ -28,18 +26,12 @@
   import { useProductStore } from '@/stores/product';
   import { type TProduct2 } from '../types/ProductType'
   import { useI18n } from 'vue-i18n';
-  import ShopcartSmall from '../components/ShopcartSmall.vue'
-
-
-
-
-
 
   const route = useRoute()
   const router = useRouter()
   const productStore = useProductStore()
   const { locale } = useI18n()
-  const randomTop = ref({})
+  const randomTop  = ref({})
   const randomBottom = ref({})
 
   
@@ -53,6 +45,8 @@
     const randomIndex = Math.floor(Math.random()* tops.length)
     randomTop.value = tops[randomIndex]
     randomBottom.value = bottoms[randomIndex]     
+    locale.value = route.params.locale
+
   })
 
   const handleClick: Function = (product: TProduct2) => {
@@ -81,12 +75,13 @@ h2 {
 }
 .random-products {
   display: flex;
-  
+  margin-bottom: 3rem;
   .random-top {
-    margin-left: 1rem;
+    text-align: center;
     width: 50%;
     > img {
-      width: 90%
+      width: 90%;
+      cursor: pointer;
     } 
     .product-details {
       > p {
@@ -95,10 +90,11 @@ h2 {
     } 
   }
   .random-bottom {
-      margin-left: 1rem;
-      width: 50%;
+    text-align: center;
+    width: 50%;
     > img {
-      width: 90%
+      width: 90%; 
+      cursor: pointer;
     } 
     .product-details {
       > p {

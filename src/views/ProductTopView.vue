@@ -12,18 +12,16 @@
     const productStore = useProductStore()
     const { locale } = useI18n()
     
-    // const selectedLanguage = localStorage.getItem('selectedLanguage') || navigator.language
 
     onMounted(() => {
         productStore.fetchProducts()
-        locale.value = route.params.locale
     })
     
     
     const handleClick: Function = (product: TProduct2) => {
         console.log(product);
         const { id } = product
-        router.push({ path: `/productList/${id}` })
+        router.push({ path: `/${locale.value}/productList/${id}` })
     }
 
 </script>

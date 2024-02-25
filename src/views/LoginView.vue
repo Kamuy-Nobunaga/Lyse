@@ -31,12 +31,11 @@
     const password = ref('')
     const wrongMsg = ref(false)
 
-    locale.value = route.params.locale
 
     const logIn = () => {
-        if(email.value === 'admin' && password.value === '123') {
+        if(email.value === 'user' && password.value === '123') {
             wrongMsg.value = false
-            productStore.userInfo = 'admin'
+            productStore.userInfo = 'user'
             localStorage.setItem('user', email.value)
             router.push({name: 'home'})
         } else {
@@ -52,6 +51,8 @@
 .login {
     display: block;
     margin: 0 auto;
+    margin-bottom: 2rem;
+    height: 80dvh;
     text-align: center;
     > h2 {
         font-size: 2rem;

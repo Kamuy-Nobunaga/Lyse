@@ -15,7 +15,7 @@
 </template>
 <script setup lang="ts">
     import { onMounted } from 'vue';
-    import { useProductStore } from '../stores/product';
+    import { useProductStore } from '@/stores/product';
 
     const productStore = useProductStore()
 

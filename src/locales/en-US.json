@@ -1,6 +1,11 @@
 {
     "title": "Title", 
-    "copyright": "Copyright {year} {owner}. All rights reserved.",
+    "copyrightFooter": "Copyright © {year} {owner}. All rights reserved.",
+    "infoFooter": "Info",
+    "contactUsFooter": "Contact Us",
+    "aboutUsFooter": "About Us",
+    "returnsFooter": "Returns",
+    "shippingFooter": "Shipping",
     "price": "Price: NT$ {price}", 
     "email": "EMAIL", 
     "password": "PASSWORD", 
@@ -17,7 +22,7 @@
     "add": "Add",
     "update": "Update", 
     "404": "This page is not existed or there is something wrong with the website.",
-    "B2Homepage": "Go back to homepage"
-
+    "B2Homepage": "Go back to homepage", 
+    "adminTitle": "Welcome back, let's get started with our lovely clothes and orders!" 
 
 }

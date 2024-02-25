@@ -7,7 +7,7 @@
       >
         <div class="cart-header">
           <slot name="header"><p>Item added!</p></slot>
-          <el-icon @click="productStore.toggleItemAdded"><Close /></el-icon>
+          <!-- <el-icon @click="productStore.toggleItemAdded"><Close /></el-icon> -->
         </div>
   
         <div class="cart-body">
@@ -16,31 +16,41 @@
         </div>
   
         <div class="cart-footer">
-          <slot>
-            <button class="btn" @click="keepShopping">Keep Shopping</button>
-            <button class="btn">Checkout</button>
+          <slot name="cart-footer">
           </slot>
+          <button class="btn" @click="keepShopping">Keep Shopping</button>
+          <button class="btn" @click="checkout">Checkout</button>
         </div>
       </dialog>
     </transition>
   </template>
   
 <script setup lang="ts">
-    import { watchEffect, ref } from 'vue';
+    import { watchEffect, ref, onMounted } from 'vue';
     import { useProductStore } from '@/stores/product'
-    import router from '@/router'; 
+    import { useRoute, useRouter } from 'vue-router';
     import { Close } from '@element-plus/icons-vue';
+    import { useI18n } from 'vue-i18n';
 
 
-
+    const route = useRoute()
+    const router = useRouter()
     const productStore = useProductStore()
-
+    const { locale } = useI18n()
+    
     const modal = ref<HTMLDialogElement>()
     
     const keepShopping = () => {
-      productStore.toggleItemAdded
-      router.push({ path: `/en/ProductList` })
+      productStore.itemAdded  = false
+      productStore.showCarAtNav = false
+      router.push({ path: `/${locale.value}/ProductList` })
 
+    }
+
+    const checkout = () => {
+      productStore.itemAdded  = false
+      productStore.showCarAtNav = false
+      router.push({ path: `/${locale.value}/checkout`})
     }
 
     watchEffect(() => {
@@ -111,6 +121,9 @@
         border: 1px solid var(--dark);
         border-radius: 5px;
         font-size: 1.5rem;
+      }
+      .btn {
+        cursor: pointer;
       }
       .btn:hover {
           color: var(--light);

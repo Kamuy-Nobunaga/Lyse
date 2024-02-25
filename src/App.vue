@@ -1,11 +1,11 @@
 <script setup lang="ts">
-  import Banner from './components/Banner.vue'
+  import Navbar from './components/Navbar.vue'
   import Footer from './components/Footer.vue'
 </script>
 
 <template>
-  <div class="products-page">
-    <Banner />
+  <div class="ecommerce-page">
+    <Navbar />
     <RouterView />  
     <Footer />
   </div>  
@@ -17,9 +17,10 @@
   --light: #d9c0a3;
   --lightest: #eaeaea;
   --font: #260101;
+  --error: rgb(211, 47, 47);
   --font-family: 'Roboto', sans-serif;
 }
-.products-page {
+.ecommerce-page {
   margin: 0 auto;
   background: var(--light);
   width: 100%;

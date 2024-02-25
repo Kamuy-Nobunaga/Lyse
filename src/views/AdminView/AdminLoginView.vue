@@ -29,7 +29,6 @@
     const password = ref('')
     const wrongMsg = ref(false)
 
-    locale.value = route.params.locale
 
     const logIn = () => {
         if(email.value === 'admin' && password.value === '123') {
@@ -49,6 +48,7 @@
     display: block;
     margin: 0 auto;
     text-align: center;
+    height: 80dvh;
     > h2 {
         font-size: 2rem;
         font-weight: bolder;
