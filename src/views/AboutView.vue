@@ -6,7 +6,16 @@
     <!-- <img src="https://thisthingofours.co.uk/cdn/shop/files/Archive-Web.png?v=1708689841" alt="another about page image"> -->
   </div>
 </template>
+<script lang="ts" setup>
+    import { onMounted } from 'vue';
+    import { useProductStore } from '@/stores/product'; 
 
+    const productStore = useProductStore()
+
+    onMounted(() => {
+      productStore.showCarAtNav = false
+    })
+</script>
 <style>
   .about {
     min-height: 100vh;

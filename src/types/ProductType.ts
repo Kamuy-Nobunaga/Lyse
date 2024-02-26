@@ -64,13 +64,18 @@ export type TOrders = {
 }
 
 export type TCustomer = {
-    name: string, 
+    nameCustomer: string, 
     email: string, 
-    phone: string
+    phoneCustomer: string
 }
 
 export type TDelivery = {
-    name: string, 
-    phone: string, 
+    nameDelivery: string, 
+    phoneDelivery: string, 
     address: string
+}
+
+export type TAccount = {
+    email: string, 
+    password: string
 }

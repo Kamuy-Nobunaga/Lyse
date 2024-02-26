@@ -4,6 +4,9 @@
     import { onMounted } from 'vue';
     import { useI18n } from 'vue-i18n';
     import { useRoute, useRouter } from 'vue-router';
+    import Dialogue from '../components/Dialogue.vue'
+    import ShopcartSmall from '@/components/ShopcartSmall.vue';
+
 
     const route = useRoute()
     const router = useRouter()
@@ -15,6 +18,8 @@
 
     onMounted(() => {
         productStore.fetchProducts()
+        productStore.showCarAtNav = true
+
     })
     
     
@@ -41,9 +46,18 @@
             <div class="product-name">{{ product.brand }} - {{ product.name }} - {{ product.color }}</div>
             <div class="product-price">{{ $t('price', { price: product.price }) }}</div>
         </div>
-    </div>
-    
+    </div>    
 </div>
+<Dialogue>
+    <template v-slot:cart-body>
+        <ShopcartSmall>
+            <template v-slot:header>
+                <h3>Your Cart</h3>
+            </template>
+        </ShopcartSmall>
+    </template>
+</Dialogue>  
+
 </template>
 <style scoped lang="scss">
 .header {

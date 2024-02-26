@@ -1,22 +1,23 @@
 <template>
     <div class="login">
-        <h2>{{ $t('login') }}</h2>
-        <form @submit.prevent="logIn">
+        <h2>{{ $t('signup') }}</h2>
+        <form @submit.prevent="signUp">
             <label for="email" class="email">{{ $t('email') }}</label>
             <input name="email" type="email" v-model="account.email">
+            <p v-if="account.email && 
+                    !account.email.match(regexEmail)">please use a valid email address to sign up</p>
             
             <label for="password" class="password">{{ $t('password') }}</label>
             <input name="password" type="password" v-model="account.password">
-            <h3 v-if="wrongMsg">Wrong email or password</h3>
-            <div class="login-buttons">
-                <button type="submit">{{ $t('login') }}</button>
-                <button type="button" @click="goToSignup">{{ $t('signup') }}</button>
-            </div>
+            <p v-if="account.password && 
+                    !account.password.match(regexPswd)">password must be more than 6 words</p>
+            
+            <button type="submit">{{ $t('signup') }}</button>
         </form>
     </div>
 </template>
 <script setup lang="ts">
-    import { ref, reactive } from 'vue';
+    import { reactive } from 'vue';
     import { useI18n } from 'vue-i18n'
     import { useProductStore } from '@/stores/product'
     import { useRoute, useRouter } from 'vue-router';
@@ -31,17 +32,16 @@
         email: '', 
         password: ''
     })
-    const wrongMsg = ref(false)
+    const regexEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+
+    const regexPswd = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]{6,30}$/
 
 
-    const logIn = () => {
-        productStore.userSignIn(account)
-        router.push({path: `/${locale.value}`})
+
+    const signUp = () => {
+        productStore.userSignup(account)
+        router.push({ path: `/${locale.value}/login`})
     } 
-
-    const goToSignup = () => {
-        router.push({path: `/${locale.value}/signup`})
-    }
 </script>
 
 <style lang="scss" scoped>
@@ -72,30 +72,19 @@
             padding: 0.5rem;
             font-size: 1rem;
         }
-        > h3 {
-            margin: 0.5rem 0 1rem 0;
-            color: var(--error);
-            font-weight: bold;
-        }
-        .login-buttons {
-            display: block;
+        > p {
             text-align: left;
-            > button {
-                font-size: 0.8rem;
-                padding: 1rem;
-            }
-            > button:first-child {
-                margin-right: 1rem;
-                background: #bf754b;
-                border: none;
-                font-weight: bold;
-            }
-            > button:last-child {
-                border: 1px solid #bf754b;
-                background: transparent;
-                color: #bf754b;
-                font-weight: bold;
-            }
+            margin-top: 0;
+            color: var(--error);
+        }
+        > button {
+            font-size: 0.8rem;
+            width: 50%;
+            padding: 1rem;
+            background: #bf754b;
+            border: none;
+            font-weight: bold;
+            margin-top: 1.5rem;
         }
     }
 }

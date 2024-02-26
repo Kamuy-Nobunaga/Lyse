@@ -18,9 +18,10 @@
                 
                 <label for="sizeXl"><input type="radio" id="sizeXl" value="XL" name="size" v-model="size"></label>
                 
+                <p v-if="sizeNotice">select a size before adding to cart</p>
             </div>
 
-            <button @click="addToCart(productStore.product)">{{ $t('addToShopCart') }}</button>
+            <button @click="addToCart(productStore.product)" :disabled="productStore.allowAddToCart" >{{ $t('addToShopCart') }}</button>
 
             <div class="item-details">
                 <p>{{ productStore.product.details }}</p>
@@ -40,11 +41,12 @@
 
 <script setup lang="ts">
     import { useProductStore } from '@/stores/product'
-    import { ref, onMounted } from 'vue';
+    import { ref, onMounted, watchEffect } from 'vue';
     import { useRoute } from 'vue-router';
     import Dialogue from '../components/Dialogue.vue'
-    import type { TProduct2 } from '@/types/ProductType'
     import ShopcartSmall from '@/components/ShopcartSmall.vue';
+    import type { TProduct2 } from '@/types/ProductType'
+
 
 
 
@@ -53,17 +55,31 @@
 
     const productId = route.params.id
     const size = ref('') 
-    const user = localStorage.getItem('user')
+    const sizeNotice = ref(false)
+    const user = localStorage.getItem('user')?.split('.')[0]
         
     onMounted(() => {
         productStore.fetchProduct(productId as string)
         productStore.showCarAtNav = true
+        //cart at all pages
     })
 
-    const addToCart = (product: TProduct2) => {
-        productStore.addCartItem(user, product, size.value)
-        productStore.fetchCartItems(user)
+
+    const addToCart = (product: TProduct2) => { 
+        if(size.value) {
+            productStore.allowAddToCart = true
+            productStore.addCartItem(user, product, size.value)            
+            productStore.fetchCartItems(user)
+        } else {
+            productStore.allowAddToCart = false
+            sizeNotice.value = true
+        }
     }
+
+    watchEffect(() => {
+        console.log(size, productStore.allowAddToCart);
+        
+    })
 
 </script>
 
@@ -96,6 +112,9 @@
             margin: 2rem 0;
             > p {
                 margin: 1rem auto 0 auto;
+            }
+            > p:nth-child(6) {
+                color: var(--error);
             }
             > label { 
                 > input {

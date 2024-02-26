@@ -5,20 +5,41 @@
         
         <table>
             <slot name="table-header"></slot>
-            <tbody class="shopcart-item" v-for="(item, key) in productStore.cartItems" :key="key">
+            <tbody class="shopcart-item" v-for="(item, key) in productStore.cartItems" :key="key" >
                 <tr>
-                    <th scope="row" v-if="item.imgUrl"><img :src="item.imgUrl" alt=""></th>
-                    <td class="item-name" v-if="item.brand">{{ item.brand }} - {{ item.name }} - {{ item.color }}</td>
-                    <td class="item-price-size-amounts" v-if="item.price && item.size && item.amounts">
-                        <span class="item-price">NT$ {{ item.price }}</span><br>
-                        <span class="item-size">{{ item.size }}</span><br>
-                        <span class="item-amounts"><el-icon @click="minusNum(key, item, item.size)"><Minus /></el-icon>{{ item.amounts }}<el-icon @click="addNum(key, item, item.size)"><Plus /></el-icon></span>
+                    <th scope="row" v-if="item.imgUrl"><img :src="item.imgUrl" alt="item image"></th>
+                    <td class="item-price-amounts" :class="{cartWithLargePage: productStore.cartWithLargePage}" v-if="item.price && item.size && item.amounts">
+                        <p class="item-price">NT$ {{ item.price }}</p>
+                        <div class="item-amounts" :class="{amountsWithLargePage: productStore.cartWithLargePage}">
+                            <el-icon @click="minusNum(key, item, item.size)"><Minus /></el-icon>
+                            {{ item.amounts }}
+                            <el-icon @click="addNum(key, item, item.size)" :class="{cartWithLargePage: productStore.cartWithLargePage}"><Plus /></el-icon>
+                        </div>
                     </td>
-                    <td class="item-delete" v-if="item.amounts"><el-icon @click="deleteItem(key)"><Delete /></el-icon></td>
+                    <!-- <td class="item-name-size" :class="{cartWithLargePage: productStore.cartWithLargePage}" v-if="item.brand">
+                        <div class="item-name">{{ item.brand }} - {{ item.name }}</div>
+                        <div class="item-size">{{ item.size }}</div>
+                    </td> -->
+                    <!-- <td class="item-price-amounts" :class="{cartWithLargePage: productStore.cartWithLargePage}" v-if="item.price && item.size && item.amounts">
+                        <p class="item-price">NT$ {{ item.price }}</p>
+                        <div class="item-amounts" :class="{amountsWithLargePage: productStore.cartWithLargePage}">
+                            <el-icon @click="minusNum(key, item, item.size)"><Minus /></el-icon>
+                            {{ item.amounts }}
+                            <el-icon @click="addNum(key, item, item.size)" :class="{cartWithLargePage: productStore.cartWithLargePage}"><Plus /></el-icon>
+                        </div>
+                    </td>
+                    <td class="item-delete" :class="{cartWithLargePage: productStore.cartWithLargePage}" v-if="item.amounts"><el-icon @click="deleteItem(key)"><Delete /></el-icon></td> -->
+                </tr>
+                <tr>
+                    <td class="item-name-size" :class="{cartWithLargePage: productStore.cartWithLargePage}" v-if="item.brand">
+                        <div class="item-name">{{ item.brand }} - {{ item.name }}</div>
+                        <div class="item-size">{{ item.size }}</div>
+                    </td>
+                    <td class="item-delete" :class="{cartWithLargePage: productStore.cartWithLargePage}" v-if="item.amounts"><el-icon @click="deleteItem(key)"><Delete /></el-icon></td>
                 </tr>
             </tbody>
         </table>
-        <div class="total-price">
+        <div class="total-price" :class="{cartWithLargePage: productStore.cartWithLargePage}">
             <p>Total price: NT$ <span>{{ totalPriceAfterFetch }}</span></p>
         </div>
         <slot name="next-button"></slot>
@@ -30,15 +51,16 @@
     import { Minus, Plus, Delete } from '@element-plus/icons-vue';
     import type { TCart } from '@/types/ProductType';
 
-    const productStore = useProductStore()
-    const user = localStorage.getItem('user') 
+    const productStore = useProductStore()    
+    const user = localStorage.getItem('user')?.split('.')[0]
+
 
     const totalPriceAfterFetch = computed(() => {
         return productStore.getTotalPriceAfterFetch;
     });
 
 
-    const deleteItem = (key: string | null) => {
+    const deleteItem = (key: string) => {
         productStore.deleteCartItem(user, key)
         productStore.fetchCartItems(user)
     }
@@ -61,54 +83,62 @@
 </script>
 <style scoped lang="scss">
     .shopcart-items {
-        width: 90%;
+        width: 60%;
         margin: 0 auto;
         text-align: center;
         > table {
-            width: 100%;
+            margin: 0 auto;
             .shopcart-item {
                 > tr {
                     > th {
-                        width: 30%;
+                        width: 40%;
                         > img {
                             width: 80%;
                             border-radius: 10px;
                         }
                     }
                     > td {
-                        font-size: 1.2rem; 
                         .el-icon {
                             cursor: pointer;
                         }
-                    }
-                    .item-name {
-                        width: 30%;
+                    } 
+
+                    .item-name-size {
                         font-size: 0.8rem;
-                        line-height: 1.2rem; 
+                        .item-name {
+                            line-height: 1.5rem; 
+                        }
+                        .item-size {
+                            padding-top: 1rem;
+                        }
                     }
-                    .item-price-size-amounts {
-                        width: 30%;
+                    .item-price-amounts {
+                        padding: 20% 0;
                         font-size: 0.8rem;
-                        padding-left: 1rem;
+                        display: flex;
+                        flex-direction: column;
                         .item-price {
 
                         }
-                        .item-size {
-                            font-size: 0.6rem;
-                        }
                         .item-amounts {
+                            font-size: 0.8rem;
                             .el-icon {
-                                font-size: 0.6rem;
-                                padding: 0 5px;
+                                font-size: 0.8rem;
+                                padding: .5rem;
                             }
+                        }
+
+                    }
+                    .cartWithLargePage {
+                        font-size: 1.2rem;
+                        .el-icon {
+                            font-size: 1.5rem;
+                        }
+                        .amountsWithLargePage {
+                            font-size: 1.5rem;
                         }
                     }
                 }
-                // > h2 {
-                //     width: 100%;
-                //     text-align: center;
-                // }
-
             }
         }
         .total-price {
@@ -118,39 +148,52 @@
                 }
             }
         }
+        .cartWithLargePage {
+            font-size: 2rem;
+        }
     }
 
 @media (max-width: 767px) {
     .shopcart-items {
-        width: 95%;
+        width: 80%;
         margin: 0 auto;
+        text-align: center;
         > table {
             .shopcart-item {
                 > tr {
                     > th {
+                        width: 60%;
                         > img {
                             width: 80%;
-                            border-radius: 3px;
                         }
                     }
-                    > td {
-                        font-size: 0.5rem; 
+                    .item-name-size {
+                        .item-size {
+                            padding-top: 0rem;
+                            padding-bottom: 1rem;
+                        }
+                    }
+                    .cartWithLargePage {
+                        font-size: 1rem;
                         .el-icon {
-                            cursor: pointer;
-                            margin: 0;
+                            font-size: 1.5rem;
+                        }
+                        .amountsWithLargePage {
+                            font-size: 1rem;
                         }
                     }
-                    .item-name {
-                        width: 10%;
-                        font-size: 0.6rem;
-                        line-height: 1rem; 
-                    }
-                    .item-price-size-amounts {
-                        font-size: 0.6rem;
-                    }
-
                 }
             }
+        }
+        .total-price {
+            > p {
+                > span {
+                    font-weight: bolder;
+                }
+            }
+        }
+        .cartWithLargePage {
+            font-size: 1.2rem;
         }
     }
 }

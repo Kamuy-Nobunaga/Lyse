@@ -37,7 +37,7 @@
         <div class="foward-and-next">
             <button @click="processToShopCart">Foward</button>
             <button @click="processToOrderCheck" :disabled="!(customerInfo.nameCustomer && customerInfo.email &&
- customerInfo.phoneCustomer && deliveryInfo.nameDelivery && deliveryInfo.address && deliveryInfo.phoneDelivery)">Next</button>
+ customerInfo.phoneCustomer && deliveryInfo.nameDelivery && deliveryInfo.address && deliveryInfo.phoneDelivery)">Pay</button>
         </div>
     </div>
 </template>
@@ -47,7 +47,7 @@
     
 
     const productStore = useProductStore()
-    const user = localStorage.getItem('user')
+    const user = localStorage.getItem('user')?.split('.')[0]
 
     onMounted(() => {
         productStore.fetchCartItems(user)

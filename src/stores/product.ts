@@ -1,19 +1,17 @@
 import { defineStore } from 'pinia'
-import type { TProduct, TProduct2, TCart, TCustomer, TDelivery, TOrders } from '@/types/ProductType'
+import type { TProduct, TProduct2, TCart, TCustomer, TDelivery, TOrders, TAccount } from '@/types/ProductType'
 import { db, productsRef, dbRealtime, cartRef } from '@/firebase';
 import { deleteDoc, getDocs, getDoc, doc, updateDoc, addDoc, or } from 'firebase/firestore';
 import { ref, set, get, child, push, update, remove } from 'firebase/database';
 import { v4 as uuidv4 } from 'uuid';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'firebase/auth'
+
 
 
 
 export const useProductStore = defineStore('product', {
   state:() => {
     return {
-      // products: <TProduct[]> [], 
-      // loading: <boolean> false, 
-      // isLogin: <boolean> false, 
-      // item: <TProduct[]> [], 
       userInfo: '' as string, 
       products2: <TProduct2[]> [], 
       product: <TProduct2> {}, 
@@ -28,12 +26,11 @@ export const useProductStore = defineStore('product', {
       cartItems: <TCart[]> [], 
       allOrders: <TOrders[]>[], 
       anOrder: <TOrders[]>[], 
+      allowAddToCart: <boolean> false, 
+      cartWithLargePage: <boolean> false,
     } 
   },
   getters: {
-    // getProductDetail(state) {
-    //   return (id: number): TProduct2 => state.products2.find((item: TProduct2) => item.id === id)!
-    // }, 
     getTop(state) {
       return () => state.products2.filter((item: TProduct2) => item.categories === 'top')
     },
@@ -59,22 +56,9 @@ export const useProductStore = defineStore('product', {
     }
   }, 
   actions: {
-    // async fetchProductList() {
-    //   //api fetch data
-    //   console.log('fetch data');
-      
-    //   this.loading = true;
-    //   const res = await fetch('https://api.escuelajs.co/api/v1/products')
-    //     .then(res => res.json())
-    //   console.log(res);
-      
-    //   this.products = res;
-    //   this.loading = false;
-    // }, 
     toggleItemAdded() {
       this.itemAdded = !this.itemAdded
     },
-
     async fetchProducts() {
       try {
         const snapshot = await getDocs(productsRef);
@@ -114,12 +98,12 @@ export const useProductStore = defineStore('product', {
     async deleteProduct(id: string) {
       await deleteDoc(doc(db, 'products', id))
     }, 
-    async fetchCartItems(user: string | null) {
+    async fetchCartItems(user: string | undefined | null) {
       const userRef = ref(dbRealtime, `cart/${user}`)
       const snapshot = await get(userRef)
       this.cartItems = snapshot.val()
     }, 
-    async addCartItem(user: string | null, product: TProduct2, size: string) {
+    async addCartItem(user: string | null | undefined, product: TProduct2, size: string) {
       this.itemAdded = !this.itemAdded
 
       const newPostKey = push(child(ref(dbRealtime), `cart/${user}`)).key;
@@ -135,7 +119,7 @@ export const useProductStore = defineStore('product', {
       }
       await update(ref(dbRealtime), updates)
     }, 
-    async addProductNumber(user: string | null, key: string, item: TCart, size: string) {
+    async addProductNumber(user: string  | undefined, key: string, item: TCart, size: string) {
       const updates: {[key: string]: any} =  {}
       updates[`cart/${user}/${key}`] = {
         name: item.name, 
@@ -148,7 +132,7 @@ export const useProductStore = defineStore('product', {
       }
       await update(ref(dbRealtime), updates)
     }, 
-    async minusProductNumber(user: string | null, key: string, item: TCart, size: string) {
+    async minusProductNumber(user: string | undefined, key: string, item: TCart, size: string) {
       const updates: {[key: string]: any} =  {}
       updates[`cart/${user}/${key}`] = {
         name: item.name, 
@@ -161,7 +145,7 @@ export const useProductStore = defineStore('product', {
       }
       await update(ref(dbRealtime), updates)
     }, 
-    async clearCart(user: string | null) {
+    async clearCart(user: string | null | undefined) {
       const updates: {[key: string]: any} =  {}
       updates[`cart/${user}`] = {}
       console.log(updates);
@@ -169,7 +153,7 @@ export const useProductStore = defineStore('product', {
       await update(ref(dbRealtime), updates)
     }, 
 
-    async deleteCartItem(user: string | null, key: string | null) {
+    async deleteCartItem(user: string | undefined, key: string | null) {
       const itemRef = ref(dbRealtime, `cart/${user}/${key}`) 
       await remove(itemRef)
     }, 
@@ -183,7 +167,7 @@ export const useProductStore = defineStore('product', {
       const snapshot = await get(orderRef)
       this.anOrder = snapshot.val()
     }, 
-    async addAnOrder(user: string | null, customerInfo: TCustomer, deliveryInfo: TDelivery) {
+    async addAnOrder(user: string | null | undefined, customerInfo: TCustomer, deliveryInfo: TDelivery) {
       const newPostKey = push(child(ref(dbRealtime), `orders/${user}`)).key;
 
       const updates: {[key: string]: any} = {}
@@ -205,8 +189,25 @@ export const useProductStore = defineStore('product', {
       
       await update(ref(dbRealtime), updates)
     }, 
+    async userSignIn(account: TAccount) {
+      const auth = getAuth()
+      const cred = await signInWithEmailAndPassword(auth, account.email, account.password)
 
+      console.log('user logged in', cred.user);
+      localStorage.setItem('user', account.email)
+    }, 
+    async userLogout() {
+      const auth = getAuth()
+      await signOut(auth)
+      localStorage.removeItem('user')
+
+      console.log('logged out successfully');
+    },
+    async userSignup(account: TAccount) {
+      const auth = getAuth()
+      const cred = await createUserWithEmailAndPassword(auth, account.email, account.password)
+
+      console.log('signed up successfully', cred.user);
+    }
   }
 })
-
-// <input type="number" :value="item.amounts" min="1" max="10">

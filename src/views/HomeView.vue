@@ -35,8 +35,8 @@
   const randomBottom = ref({})
 
   
-  const user = localStorage.getItem('user')
-  productStore.fetchCartItems(user)
+  // const user = localStorage.getItem('user')?.split('.')[0]
+  // productStore.fetchCartItems(user)
 
   onMounted(async () => {
     await productStore.fetchProducts()
@@ -46,6 +46,7 @@
     randomTop.value = tops[randomIndex]
     randomBottom.value = bottoms[randomIndex]     
     locale.value = route.params.locale
+    productStore.showCarAtNav = false
 
   })
 

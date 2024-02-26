@@ -13,7 +13,16 @@
             <img src="https://cafe24img.poxo.com/anglan/web/product/extra/small/202402/70e48c48d8e8f478276a688750f660e4.jpg" alt="bottom image" @click="handleBottom">
         </div>
     </div>
-    
+    <Dialogue>
+        <template v-slot:cart-body>
+            <ShopcartSmall>
+                <template v-slot:header>
+                    <h3>Your Cart</h3>
+                </template>
+            </ShopcartSmall>
+        </template>
+    </Dialogue>  
+
 </template>
   
   <script setup lang="ts">
@@ -21,6 +30,8 @@
     import { ref, onMounted } from 'vue';
     import { useProductStore } from '@/stores/product';
     import { useI18n } from 'vue-i18n';
+    import Dialogue from '../components/Dialogue.vue'
+    import ShopcartSmall from '@/components/ShopcartSmall.vue';
 
   
   

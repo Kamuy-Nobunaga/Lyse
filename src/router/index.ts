@@ -18,15 +18,15 @@ const router = createRouter({
         {
           path: 'about',
           name: 'about',
-          component: () => import('../views/AboutView.vue')
+          component: () => import('@/views/AboutView.vue')
         },
         {
           path: 'productList',
           name: 'productList',
-          component: () => import('../views/ProductList.vue'), 
+          component: () => import('@/views/ProductList.vue'), 
           beforeEnter:( to, from, next ) => {
             const userCheck = localStorage.getItem('user')
-            if (userCheck === 'user') {
+            if (userCheck) {
               next()
             } else {
               return next({ name: 'login'})
@@ -36,42 +36,63 @@ const router = createRouter({
         {
           path: 'productList/:id',
           name: 'productDetail',
-          component: () => import('../views/ProductDetail.vue')
+          component: () => import('@/views/ProductDetail.vue')
         }, 
         {
         path: 'categories',
         name: 'categories',
-        component: () => import('../views/CategoriesView.vue')
+        component: () => import('@/views/CategoriesView.vue')
         }, 
         {
           path: 'top',
           name: 'top',
-          component: () => import('../views/ProductTopView.vue')
+          component: () => import('@/views/ProductTopView.vue'), 
+          beforeEnter:( to, from, next ) => {
+            const userCheck = localStorage.getItem('user')
+            if (userCheck) {
+              next()
+            } else {
+              return next({ name: 'login'})
+            }
+          }
         },
         {
           path: 'bottom',
           name: 'bottom',
-          component: () => import('../views/ProductBottomView.vue')
+          component: () => import('@/views/ProductBottomView.vue'), 
+          beforeEnter:( to, from, next ) => {
+            const userCheck = localStorage.getItem('user')
+            if (userCheck) {
+              next()
+            } else {
+              return next({ name: 'login'})
+            }
+          }
         }, 
         {
           path: 'checkout',
           name: 'checkout',
-          component: () => import('../views/CheckoutView.vue')
+          component: () => import('@/views/CheckoutView.vue')
         }, 
         {
           path: 'login',
           name: 'login',
-          component: () => import('../views/LoginView.vue'), 
+          component: () => import('@/views/LoginView.vue'), 
           beforeEnter:( to, from, next ) => {
             
             const userCheck = localStorage.getItem('user')
-            if (userCheck === 'user') {
+            if (userCheck) {
               next({ path: `/en/productList` })
             } else {
               return next()
             }
           }
 
+        },
+        {
+          path: 'signup',
+          name: 'signup',
+          component: () => import('@/views/SignupView.vue'), 
         },
         {
           path: 'admin-login',

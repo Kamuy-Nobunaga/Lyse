@@ -43,7 +43,8 @@
     const keepShopping = () => {
       productStore.itemAdded  = false
       productStore.showCarAtNav = false
-      router.push({ path: `/${locale.value}/ProductList` })
+      // router.push({ path: `/${locale.value}/ProductList` })
+      router.go(0)
 
     }
 
@@ -92,7 +93,7 @@
     background: var(--light);
     border: none;
     font-size: 1.5rem;
-    width: 80%;
+    width: 50%;
     .cart-header {
       position: relative;
       > p {
