@@ -13,13 +13,35 @@
                 <button type="button" @click="goToSignup">{{ $t('signup') }}</button>
             </div>
         </form>
+        <Alert>
+            <template v-slot:modal-header>
+                <p class="alert-header" v-if="productStore.loggingIn">
+                    Logging in...
+                </p>
+                <p class="log-in-failed-header" v-if="productStore.loginFailed">
+                    wrong email or password...
+                </p>
+                <p class="log-in-to-continue" v-if="productStore.logInToContinue">
+                    please log in to continue...
+                </p>
+            </template>
+            <template v-slot:modal-body>
+                <p class="log-in-failed-content" v-if="productStore.loginFailed">
+                    try again or sign up if you haven't
+                </p>
+            </template>
+            <template v-slot:modal-footer>
+            </template>
+        </Alert>
+
     </div>
 </template>
 <script setup lang="ts">
-    import { ref, reactive } from 'vue';
+    import { ref, reactive, onMounted } from 'vue';
     import { useI18n } from 'vue-i18n'
     import { useProductStore } from '@/stores/product'
     import { useRoute, useRouter } from 'vue-router';
+    import Alert from '@/components/Alert.vue'
 
     const route = useRoute()
     const router = useRouter()
@@ -33,15 +55,36 @@
     })
     const wrongMsg = ref(false)
 
+    const logIn = async () => {
+        
+         await productStore.userSignIn(account)
+        const loginSuccessful = localStorage.getItem('user')
 
-    const logIn = () => {
-        productStore.userSignIn(account)
-        router.push({path: `/${locale.value}`})
+        if (loginSuccessful) {
+            productStore.loggingIn = true
+            productStore.showAlert = true
+            setTimeout(() => {
+                productStore.showAlert = false
+                productStore.loggingIn = false
+                router.push({path: `/${locale.value}`})
+            }, 1500)
+            
+        } else {
+            productStore.loginFailed = true
+            productStore.showAlert = true
+            setTimeout(() => {
+                productStore.showAlert = false
+                productStore.loginFailed = false
+                router.go(0)
+            }, 2000)
+            console.log('log in failed...');
+        }
     } 
 
     const goToSignup = () => {
         router.push({path: `/${locale.value}/signup`})
-    }
+    } 
+
 </script>
 
 <style lang="scss" scoped>
@@ -97,6 +140,20 @@
                 font-weight: bold;
             }
         }
+    }
+    .alert-header {
+        font-size: 2rem;
+        color: var(--font);
+    }
+    .log-in-failed-header {
+        font-size: 1.5rem;
+        font-weight: bolder;
+    }
+    .log-in-failed-content {
+        font-size: 1rem;
+    }
+    .log-in-to-continue {
+        font-size: 1.5rem;
     }
 }
 

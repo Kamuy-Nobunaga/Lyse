@@ -14,6 +14,7 @@ declare module 'vue' {
     AdminShopSetting: typeof import('./src/components/Admin/AdminShopSetting.vue')['default']
     AdminSideBar: typeof import('./src/components/Admin/AdminSideBar.vue')['default']
     AdminTopProducts: typeof import('./src/components/Admin/AdminTopProducts.vue')['default']
+    Alert: typeof import('./src/components/Alert.vue')['default']
     CheckoutProgress: typeof import('./src/components/Order/CheckoutProgress.vue')['default']
     Dialogue: typeof import('./src/components/Dialogue.vue')['default']
     ElIcon: typeof import('element-plus/es')['ElIcon']

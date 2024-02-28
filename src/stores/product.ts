@@ -28,6 +28,11 @@ export const useProductStore = defineStore('product', {
       anOrder: <TOrders[]>[], 
       allowAddToCart: <boolean> false, 
       cartWithLargePage: <boolean> false,
+      showAlert: <boolean> false, 
+      loggingIn: <boolean> false, 
+      loginFailed: <boolean> false, 
+      logInToContinue: <boolean> false, 
+
     } 
   },
   getters: {
@@ -191,10 +196,16 @@ export const useProductStore = defineStore('product', {
     }, 
     async userSignIn(account: TAccount) {
       const auth = getAuth()
-      const cred = await signInWithEmailAndPassword(auth, account.email, account.password)
 
-      console.log('user logged in', cred.user);
-      localStorage.setItem('user', account.email)
+      try {
+        const cred = await signInWithEmailAndPassword(auth, account.email, account.password)
+        localStorage.setItem('user', account.email)
+        console.log('user logged in', cred.user);
+      } catch (err) {
+        console.log(err);
+        
+      }
+
     }, 
     async userLogout() {
       const auth = getAuth()
@@ -208,6 +219,9 @@ export const useProductStore = defineStore('product', {
       const cred = await createUserWithEmailAndPassword(auth, account.email, account.password)
 
       console.log('signed up successfully', cred.user);
+    }, 
+    toggleShowAlert () {
+      this.showAlert = !this.showAlert
     }
   }
 })

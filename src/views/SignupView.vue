@@ -1,5 +1,5 @@
 <template>
-    <div class="login">
+    <div class="signup">
         <h2>{{ $t('signup') }}</h2>
         <form @submit.prevent="signUp">
             <label for="email" class="email">{{ $t('email') }}</label>
@@ -14,17 +14,31 @@
             
             <button type="submit">{{ $t('signup') }}</button>
         </form>
+        <Alert>
+            <template v-slot:modal-header>
+                <p class="alert-header">
+                    Welcome aboard
+                </p>
+            </template>
+            <template v-slot:modal-body>
+                <p class="alert-body">
+                    let's log in!!! 
+                </p>
+            </template>
+        </Alert>
     </div>
+
 </template>
 <script setup lang="ts">
-    import { reactive } from 'vue';
+    import { reactive, onMounted } from 'vue';
     import { useI18n } from 'vue-i18n'
     import { useProductStore } from '@/stores/product'
     import { useRoute, useRouter } from 'vue-router';
+    import Alert from '@/components/Alert.vue'
+
 
     const route = useRoute()
     const router = useRouter()
-
 
     const { locale } = useI18n()
     const productStore = useProductStore()
@@ -38,14 +52,19 @@
 
 
 
-    const signUp = () => {
-        productStore.userSignup(account)
-        router.push({ path: `/${locale.value}/login`})
+    const signUp = async () => {
+        await productStore.userSignup(account)
+        productStore.showAlert = true
+        setTimeout(() => {
+            productStore.showAlert = false
+            router.push({ path: `/${locale.value}/login`})
+        }, 1500)
+        
     } 
 </script>
 
 <style lang="scss" scoped>
-.login {
+.signup {
     display: block;
     margin: 0 auto;
     margin-bottom: 2rem;
@@ -86,6 +105,14 @@
             font-weight: bold;
             margin-top: 1.5rem;
         }
+    }
+    .alert-header {
+        font-size: 2rem;
+        margin-bottom: 0;
+    }
+    .alert-body {
+        margin-top: 0;
+        font-size: 1.5rem;
     }
 }
 

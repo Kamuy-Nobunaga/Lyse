@@ -26,9 +26,18 @@ const router = createRouter({
           component: () => import('@/views/ProductList.vue'), 
           beforeEnter:( to, from, next ) => {
             const userCheck = localStorage.getItem('user')
+            const productStore = useProductStore()
+
             if (userCheck) {
               next()
             } else {
+              productStore.logInToContinue = true
+              productStore.showAlert = true
+              setTimeout(() => {
+                productStore.showAlert = false
+                productStore.logInToContinue = false
+              }, 1500)
+
               return next({ name: 'login'})
             }
           }
@@ -36,12 +45,37 @@ const router = createRouter({
         {
           path: 'productList/:id',
           name: 'productDetail',
-          component: () => import('@/views/ProductDetail.vue')
+          component: () => import('@/views/ProductDetail.vue'), 
+          beforeEnter:( to, from, next ) => {
+            const userCheck = localStorage.getItem('user')
+            if (userCheck) {
+              next()
+            } else {
+              return next({ name: 'login'})
+            }
+          }
         }, 
         {
-        path: 'categories',
-        name: 'categories',
-        component: () => import('@/views/CategoriesView.vue')
+          path: 'categories',
+          name: 'categories',
+          component: () => import('@/views/CategoriesView.vue'), 
+          beforeEnter:( to, from, next ) => {
+            const userCheck = localStorage.getItem('user')
+            const productStore = useProductStore()
+
+            if (userCheck) {
+              next()
+            } else {
+              productStore.logInToContinue = true
+              productStore.showAlert = true
+              setTimeout(() => {
+                productStore.showAlert = false
+                productStore.logInToContinue = false
+              }, 1500)
+
+              return next({ name: 'login'})
+            }
+          }
         }, 
         {
           path: 'top',
@@ -49,9 +83,17 @@ const router = createRouter({
           component: () => import('@/views/ProductTopView.vue'), 
           beforeEnter:( to, from, next ) => {
             const userCheck = localStorage.getItem('user')
+            const productStore = useProductStore()
+
             if (userCheck) {
               next()
             } else {
+              productStore.logInToContinue = true
+              productStore.showAlert = true
+              setTimeout(() => {
+                productStore.showAlert = false
+                productStore.logInToContinue = false
+              }, 1500)
               return next({ name: 'login'})
             }
           }
@@ -62,9 +104,17 @@ const router = createRouter({
           component: () => import('@/views/ProductBottomView.vue'), 
           beforeEnter:( to, from, next ) => {
             const userCheck = localStorage.getItem('user')
+            const productStore = useProductStore()
+
             if (userCheck) {
               next()
             } else {
+              productStore.logInToContinue = true
+              productStore.showAlert = true
+              setTimeout(() => {
+                productStore.showAlert = false
+                productStore.logInToContinue = false
+              }, 1500)
               return next({ name: 'login'})
             }
           }
@@ -72,17 +122,33 @@ const router = createRouter({
         {
           path: 'checkout',
           name: 'checkout',
-          component: () => import('@/views/CheckoutView.vue')
+          component: () => import('@/views/CheckoutView.vue'), 
+          beforeEnter:( to, from, next ) => {
+            const userCheck = localStorage.getItem('user')
+            const productStore = useProductStore()
+
+            if (userCheck) {
+              next()
+            } else {
+              productStore.logInToContinue = true
+              productStore.showAlert = true
+              setTimeout(() => {
+                productStore.showAlert = false
+                productStore.logInToContinue = false
+              }, 1500)
+              return next({ name: 'login'})
+            }
+          }
         }, 
         {
           path: 'login',
           name: 'login',
           component: () => import('@/views/LoginView.vue'), 
           beforeEnter:( to, from, next ) => {
-            
             const userCheck = localStorage.getItem('user')
+
             if (userCheck) {
-              next({ path: `/en/productList` })
+              next({ path: `/en` })
             } else {
               return next()
             }
@@ -154,6 +220,11 @@ const router = createRouter({
               return next({ path: `/en/admin-login` })
             }
           }
+        }, 
+        {
+          path: 'alert',
+          name: 'alert',
+          component: () => import('@/components/Alert.vue')
         }, 
 
         {

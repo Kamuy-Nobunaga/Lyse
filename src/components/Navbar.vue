@@ -5,11 +5,9 @@
             <img src="../assets/logo-no-background.svg" alt="logo image" @click="toHomePage">
             <div class="user-and-cart">
                 <router-link :to="{ path: `/${route.params.locale}/login` }"><el-icon><UserFilled /></el-icon></router-link>
-                <!-- logout -->
-                <div class="logout-icon" @click="userLogout">
+                <div class="logout-icon" @click="userLogout" v-if="userLogin">
                     <el-icon><Pouring /></el-icon>
                     <span>logout</span>
-                    <!-- <el-icon><Umbrella /></el-icon> -->
                 </div>
                 <el-icon class="cart" @click="productStore.toggleItemAdded" v-if="productStore.showCarAtNav"><ShoppingCart /></el-icon>
             </div>
@@ -52,7 +50,7 @@
     const route = useRoute()
     const router = useRouter()
     const productStore = useProductStore()
-
+    const userLogin = ref(localStorage.getItem('user'))
     const isShowCat = ref(false)
     const toggleShowCat = () => {
         isShowCat.value = !isShowCat.value
@@ -63,7 +61,7 @@
 
     const userLogout = () => {
         productStore.userLogout()
-        router.push({ path: `/${route.params.locale}` })
+        router.go(0)
     }
 
 </script>
