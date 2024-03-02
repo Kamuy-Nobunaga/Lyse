@@ -22,7 +22,8 @@ export const useProductStore = defineStore('product', {
       adminTop: <boolean> false, 
       adminBottom: <boolean> false, 
       adminOrders: <boolean> false, 
-      adminReviews: <boolean> false, adminShopSetting: <boolean> false, 
+      adminReviews: <boolean> false, 
+      adminShopSetting: <boolean> false, 
       cartItems: <TCart[]> [], 
       allOrders: <TOrders[]>[], 
       anOrder: <TOrders[]>[], 
@@ -32,6 +33,7 @@ export const useProductStore = defineStore('product', {
       loggingIn: <boolean> false, 
       loginFailed: <boolean> false, 
       logInToContinue: <boolean> false, 
+      userOrAdmin: <boolean> true, 
 
     } 
   },
@@ -150,7 +152,7 @@ export const useProductStore = defineStore('product', {
       }
       await update(ref(dbRealtime), updates)
     }, 
-    async clearCart(user: string | null | undefined) {
+    async clearCart(user: string = '') {
       const updates: {[key: string]: any} =  {}
       updates[`cart/${user}`] = {}
       console.log(updates);
@@ -203,7 +205,6 @@ export const useProductStore = defineStore('product', {
         console.log('user logged in', cred.user);
       } catch (err) {
         console.log(err);
-        
       }
 
     }, 

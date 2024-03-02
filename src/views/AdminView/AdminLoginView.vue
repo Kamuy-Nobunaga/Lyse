@@ -15,7 +15,7 @@
     </div>
 </template>
 <script setup lang="ts">
-    import { ref } from 'vue';
+    import { onMounted, ref } from 'vue';
     import { useI18n } from 'vue-i18n'
     import { useProductStore } from '@/stores/product'
     import { useRoute, useRouter } from 'vue-router';
@@ -28,6 +28,8 @@
     const email = ref('')
     const password = ref('')
     const wrongMsg = ref(false)
+
+    onMounted(() => productStore.userOrAdmin = false)
 
 
     const logIn = () => {

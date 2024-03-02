@@ -3,16 +3,22 @@
         <div class="logo-and-login">
             <LanguageSelector />
             <img src="../assets/logo-no-background.svg" alt="logo image" @click="toHomePage">
-            <div class="user-and-cart">
+            <div class="user-and-cart" v-if="productStore.userOrAdmin">
                 <router-link :to="{ path: `/${route.params.locale}/login` }"><el-icon><UserFilled /></el-icon></router-link>
-                <div class="logout-icon" @click="userLogout" v-if="userLogin">
+                <div class="logout-icon" @click="userLogout">
                     <el-icon><Pouring /></el-icon>
                     <span>logout</span>
                 </div>
                 <el-icon class="cart" @click="productStore.toggleItemAdded" v-if="productStore.showCarAtNav"><ShoppingCart /></el-icon>
             </div>
+            <div class="admin-logout" v-if="!productStore.userOrAdmin">
+                <div class="logout-icon" @click="adminLogout">
+                    <el-icon><Pouring /></el-icon>
+                    <span>logout</span>
+                </div>
+            </div>
         </div>
-        <div class="navbar-items">
+        <div class="navbar-items" v-if="productStore.userOrAdmin">
             <ul>
                 <li>
                     <router-link :to="{ path: `/${route.params.locale}/about` }">{{ $t('about') }}</router-link>
@@ -40,8 +46,8 @@
 
 <script setup lang="ts">
     import { useRoute, useRouter } from 'vue-router';
-    import { UserFilled, ShoppingCart, ArrowDown, Umbrella, Pouring } from '@element-plus/icons-vue';
-    import { ref } from 'vue';
+    import { UserFilled, ShoppingCart, ArrowDown, Pouring } from '@element-plus/icons-vue';
+    import { ref, computed, onMounted } from 'vue';
     import { useProductStore } from '../stores/product'; 
     import LanguageSelector from './LanguageSelector.vue';
 
@@ -50,7 +56,7 @@
     const route = useRoute()
     const router = useRouter()
     const productStore = useProductStore()
-    const userLogin = ref(localStorage.getItem('user'))
+    
     const isShowCat = ref(false)
     const toggleShowCat = () => {
         isShowCat.value = !isShowCat.value
@@ -62,6 +68,12 @@
     const userLogout = () => {
         productStore.userLogout()
         router.go(0)
+    }
+
+    const adminLogout = () => {
+        localStorage.removeItem('admin')
+        router.go(0)
+   
     }
 
 </script>

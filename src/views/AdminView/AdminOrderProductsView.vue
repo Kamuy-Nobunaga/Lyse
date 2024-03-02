@@ -59,6 +59,7 @@
     onMounted( () => {
         productStore.fetchOrders()
         productStore.fetchOrder(keyUser.value, keyOrder.value)
+        productStore.userOrAdmin = false
         console.log(productStore.anOrder);
         
     })
@@ -87,7 +88,7 @@
             > thead {
                 > tr {
                     > th {
-                        width: (95% / 5);
+                        width: calc(95% / 5);
                     }
                     .complete {
                         width: 5%;

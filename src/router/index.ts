@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory, RouterView } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import { useI18n } from 'vue-i18n'
 import { useProductStore } from '@/stores/product'
 
 const router = createRouter({
@@ -13,7 +12,7 @@ const router = createRouter({
         {
           path: '',
           name: 'home',
-          component: HomeView
+          component: HomeView, 
         }, 
         {
           path: 'about',
@@ -24,136 +23,36 @@ const router = createRouter({
           path: 'productList',
           name: 'productList',
           component: () => import('@/views/ProductList.vue'), 
-          beforeEnter:( to, from, next ) => {
-            const userCheck = localStorage.getItem('user')
-            const productStore = useProductStore()
-
-            if (userCheck) {
-              next()
-            } else {
-              productStore.logInToContinue = true
-              productStore.showAlert = true
-              setTimeout(() => {
-                productStore.showAlert = false
-                productStore.logInToContinue = false
-              }, 1500)
-
-              return next({ name: 'login'})
-            }
-          }
         },  
         {
           path: 'productList/:id',
           name: 'productDetail',
           component: () => import('@/views/ProductDetail.vue'), 
-          beforeEnter:( to, from, next ) => {
-            const userCheck = localStorage.getItem('user')
-            if (userCheck) {
-              next()
-            } else {
-              return next({ name: 'login'})
-            }
-          }
         }, 
         {
           path: 'categories',
           name: 'categories',
           component: () => import('@/views/CategoriesView.vue'), 
-          beforeEnter:( to, from, next ) => {
-            const userCheck = localStorage.getItem('user')
-            const productStore = useProductStore()
-
-            if (userCheck) {
-              next()
-            } else {
-              productStore.logInToContinue = true
-              productStore.showAlert = true
-              setTimeout(() => {
-                productStore.showAlert = false
-                productStore.logInToContinue = false
-              }, 1500)
-
-              return next({ name: 'login'})
-            }
-          }
         }, 
         {
           path: 'top',
           name: 'top',
           component: () => import('@/views/ProductTopView.vue'), 
-          beforeEnter:( to, from, next ) => {
-            const userCheck = localStorage.getItem('user')
-            const productStore = useProductStore()
-
-            if (userCheck) {
-              next()
-            } else {
-              productStore.logInToContinue = true
-              productStore.showAlert = true
-              setTimeout(() => {
-                productStore.showAlert = false
-                productStore.logInToContinue = false
-              }, 1500)
-              return next({ name: 'login'})
-            }
-          }
         },
         {
           path: 'bottom',
           name: 'bottom',
           component: () => import('@/views/ProductBottomView.vue'), 
-          beforeEnter:( to, from, next ) => {
-            const userCheck = localStorage.getItem('user')
-            const productStore = useProductStore()
-
-            if (userCheck) {
-              next()
-            } else {
-              productStore.logInToContinue = true
-              productStore.showAlert = true
-              setTimeout(() => {
-                productStore.showAlert = false
-                productStore.logInToContinue = false
-              }, 1500)
-              return next({ name: 'login'})
-            }
-          }
         }, 
         {
           path: 'checkout',
           name: 'checkout',
           component: () => import('@/views/CheckoutView.vue'), 
-          beforeEnter:( to, from, next ) => {
-            const userCheck = localStorage.getItem('user')
-            const productStore = useProductStore()
-
-            if (userCheck) {
-              next()
-            } else {
-              productStore.logInToContinue = true
-              productStore.showAlert = true
-              setTimeout(() => {
-                productStore.showAlert = false
-                productStore.logInToContinue = false
-              }, 1500)
-              return next({ name: 'login'})
-            }
-          }
         }, 
         {
           path: 'login',
           name: 'login',
           component: () => import('@/views/LoginView.vue'), 
-          beforeEnter:( to, from, next ) => {
-            const userCheck = localStorage.getItem('user')
-
-            if (userCheck) {
-              next({ path: `/en` })
-            } else {
-              return next()
-            }
-          }
-
         },
         {
           path: 'signup',
@@ -197,36 +96,12 @@ const router = createRouter({
           path: 'admin-product-edit/:id',
           name: 'adminProductEdit',
           component: () => import('@/views/AdminView/AdminProductEditView.vue'), 
-          beforeEnter:( to, from, next ) => {
-            
-            const adminCheck = localStorage.getItem('admin')
-            if (adminCheck && adminCheck === 'admin') {
-              next()
-            } else {
-              return next({ path: `/en/admin-login` })
-            }
-          }
         }, 
         {
           path: 'admin-order-products/:user/:order',
           name: 'adminOrderProducts',
           component: () => import('@/views/AdminView/AdminOrderProductsView.vue'), 
-          beforeEnter:( to, from, next ) => {
-            
-            const adminCheck = localStorage.getItem('admin')
-            if (adminCheck && adminCheck === 'admin') {
-              next()
-            } else {
-              return next({ path: `/en/admin-login` })
-            }
-          }
         }, 
-        {
-          path: 'alert',
-          name: 'alert',
-          component: () => import('@/components/Alert.vue')
-        }, 
-
         {
           path: '404',
           name: '404',
@@ -236,8 +111,6 @@ const router = createRouter({
           path: ':catchAll(.*)',
           redirect: '/en/404',
         }
-
-
       ]
     }, 
     {
@@ -248,5 +121,27 @@ const router = createRouter({
   ]
 })
 
+router.beforeEach(( to ) => {
+  const isLogin = localStorage.getItem('user')
+  const isAdminLogin = localStorage.getItem('admin')
+  const productStore = useProductStore()
+
+  if(to.name === 'login' && isLogin) {
+    return ({ name: 'home' })
+  } else if ((to.name === 'adminMain' || to.name === 'adminProductAdd' || to.name === 'adminProductEdit' || to.name === 'adminOrderProducts') && (!isAdminLogin || isAdminLogin !== 'admin')) {
+    return ({ path: `/en/admin-login`})
+  } else if ( (to.name === 'productList' || to.name === 'productDetail' || to.name === 'categories' || to.name === 'top' || to.name === 'bottom' || to.name === 'checkout') && !isLogin ) {
+    productStore.logInToContinue = true
+    productStore.showAlert = true
+    setTimeout(() => {
+      productStore.showAlert = false
+      productStore.logInToContinue = false
+    }, 1000 * 1.5)
+    return ({ name: 'login' })
+
+  } else {
+    return
+  }
+})
 
 export default router

@@ -51,6 +51,7 @@
         
     onMounted(() => {
         productStore.fetchProduct(productId)
+        productStore.userOrAdmin = false
     })
 
 </script>

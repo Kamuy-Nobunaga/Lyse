@@ -30,6 +30,7 @@
 
     onMounted(() => {
         productStore.adminOrders = true
+        productStore.userOrAdmin = false
     })
 
 </script>

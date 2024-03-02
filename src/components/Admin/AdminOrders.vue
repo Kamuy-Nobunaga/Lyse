@@ -46,7 +46,7 @@
     const router = useRouter()
     const { locale } = useI18n()
 
-    const user = localStorage.getItem('user')
+    const user = localStorage.getItem('user')?.split('.')[0]
     
     const goToOrder = (user: string, order: string) => {
         router.push({ path: `/${locale.value}/admin-order-products/${user}/${order}`})

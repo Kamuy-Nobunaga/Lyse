@@ -53,7 +53,7 @@
     const productForm = reactive({
         name: '', 
         brand: '', 
-        price: null, 
+        price: 0, 
         color: '', 
         image: '', 
         details: '', 
@@ -69,9 +69,8 @@
         router.go(-1)
     }
         
-    onMounted(() => {
-        
-    })
+    onMounted(() => productStore.userOrAdmin = false)
+
 
 </script>
 
