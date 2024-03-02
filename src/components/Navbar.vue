@@ -14,7 +14,7 @@
             <div class="admin-logout" v-if="!productStore.userOrAdmin">
                 <div class="logout-icon" @click="adminLogout">
                     <el-icon><Pouring /></el-icon>
-                    <span>logout</span>
+                    <span>admin logout</span>
                 </div>
             </div>
         </div>
@@ -67,13 +67,12 @@
 
     const userLogout = () => {
         productStore.userLogout()
-        router.go(0)
+        router.push({ path: `/${route.params.locale}` })
     }
 
     const adminLogout = () => {
         localStorage.removeItem('admin')
-        router.go(0)
-   
+        router.push({ path: `/${route.params.locale}/admin-login` })
     }
 
 </script>
